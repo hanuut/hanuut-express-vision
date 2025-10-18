@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hanuut - GTM Quest</title>
+    <style>
+      :root {
+        --background-color: #f5f5f7;
+        --card-background: #ffffff;
+        --text-color: #1d1d1f;
+        --text-secondary: #555;
+        --border-color: #d2d2d7;
+        --accent-color: #000;
+        --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: var(--font-family);
+        background-color: var(--background-color);
+        color: var(--text-color);
+        line-height: 1.6;
+        padding: 2rem 1rem;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 3rem;
+        padding: 2rem;
+        background-color: var(--card-background);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+      }
+
+      header h1 {
+        font-size: 2.5rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      header p {
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
+      }
+
+      .progress-container {
+        width: 100%;
+        background-color: #e9e9eb;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+      }
+
+      .progress-bar {
+        height: 12px;
+        width: 0%;
+        background-color: var(--accent-color);
+        transition: width 0.4s ease-in-out;
+      }
+
+      #progress-text {
+        margin-top: 0.5rem;
+        font-weight: 500;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+      }
+
+      .world {
+        margin-bottom: 4rem;
+      }
+
+      .world-title {
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--border-color);
+      }
+
+      .level {
+        background-color: var(--card-background);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        padding: 1.5rem;
+        transition: box-shadow 0.3s ease;
+      }
+
+      .level:hover {
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      }
+
+      .level-header {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      .level-checkbox {
+        width: 20px;
+        height: 20px;
+        margin-right: 1rem;
+        accent-color: var(--accent-color);
+      }
+
+      .level-title {
+        flex-grow: 1;
+        font-size: 1.2rem;
+        font-weight: 500;
+      }
+
+      .level-toggle {
+        font-size: 1.5rem;
+        font-weight: 500;
+        transition: transform 0.3s ease;
+      }
+
+      .level.open .level-toggle {
+        transform: rotate(45deg);
+      }
+
+      .level-content {
+        display: none;
+        padding-top: 1.5rem;
+        margin-top: 1.5rem;
+        border-top: 1px solid var(--border-color);
+      }
+
+      .level.open .level-content {
+        display: block;
+      }
+
+      .content-section {
+        margin-bottom: 1.5rem;
+      }
+      .content-section h4 {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--text-color);
+      }
+      .content-section p,
+      .content-section ul,
+      .content-section li {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+      }
+      .content-section ul {
+        padding-left: 20px;
+      }
+      .content-section pre {
+        background-color: #f9f9f9;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 1rem;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+      }
+      .content-section code {
+        font-family: monospace;
+        background-color: #e9e9eb;
+        padding: 2px 5px;
+        border-radius: 4px;
+      }
+
+      .level-notes textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        font-family: var(--font-family);
+        font-size: 0.95rem;
+        resize: vertical;
+        min-height: 80px;
+        margin-top: 1rem;
+      }
+
+      .level-notes textarea:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Hanuut GTM Quest</h1>
+        <p>"Your Neighborhood, Delivered."</p>
+        <div class="progress-container">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <p id="progress-text">0% Complete</p>
+      </header>
+
+      <main>
+        <!-- WORLD 1: FOUNDATION -->
+        <section class="world">
+          <h2 class="world-title">World 1: Foundation</h2>
+
+          <div class="level" id="level-1-1">
+            <div class="level-header">
+              <input type="checkbox" class="level-checkbox" id="check-1-1" />
+              <h3 class="level-title">Level 1.1: Persona Development</h3>
+              <span class="level-toggle">+</span>
+            </div>
+            <div class="level-content">
+              <div class="content-section">
+                <h4>Vendor Personas (My Hanuut)</h4>
+                <p>
+                  <strong>1. "Restaurant Fatima":</strong> 45-60,
+                  tech-skeptical, overwhelmed by rush hours and high
+                  commissions. Goal: Simplify orders, reduce errors, and
+                  increase profit.
+                </p>
+                <p>
+                  <strong>2. "Grocer Ahmed":</strong> 35-50, hard-working,
+                  worried about competition. Pain: Inventory chaos, slow
+                  checkout. Goal: Modernize to compete and retain loyal
+                  customers.
+                </p>
+                <p>
+                  <strong>3. "Layla the Artisan":</strong> 25-35, sells on
+                  social media. Pain: Managing orders via DMs is unprofessional.
+                  Goal: A simple, legit online storefront.
+                </p>
+              </div>
+              <div class="content-section">
+                <h4>Customer Personas (Hanuut)</h4>
+                <p>
+                  <strong>1. "Convenience-Seeking Sarah":</strong> 24-35, young
+                  professional, time-poor. Wants fast, reliable delivery from
+                  her actual neighborhood spots.
+                </p>
+                <p>
+                  <strong>2. "Local-Supporter Youssef":</strong> 40-55,
+                  community-focused. Wants an easy way to discover and support
+                  local businesses online.
+                </p>
+              </div>
+              <div class="level-notes">
+                <textarea
+                  placeholder="Add notes or feedback for this level..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="level" id="level-1-2">
+            <div class="level-header">
+              <input type="checkbox" class="level-checkbox" id="check-1-2" />
+              <h3 class="level-title">Level 1.2: UVP Crafting</h3>
+              <span class="level-toggle">+</span>
+            </div>
+            <div class="level-content">
+              <div class="content-section">
+                <p>
+                  <strong>For "Restaurant Fatima":</strong> Get a free QR code
+                  menu to reduce order errors and an online shop to reach new
+                  customers, all in one simple POS.
+                </p>
+                <p>
+                  <strong>For "Grocer Ahmed":</strong> The simple toolkit to
+                  track inventory with barcode scanning, speed up checkout, and
+                  offer online shopping to your regulars.
+                </p>
+                <p>
+                  <strong>For "Convenience-Seeking Sarah":</strong> The only app
+                  that delivers the hidden gems of your neighborhood, faster and
+                  fresher.
+                </p>
+                <p>
+                  <strong>For "Local-Supporter Youssef":</strong> Your digital
+                  main street. Easily browse, order from, and support the local
+                  shops that make your community unique.
+                </p>
+              </div>
+              <div class="level-notes">
+                <textarea
+                  placeholder="Add notes or feedback for this level..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="level" id="level-1-3">
+            <div class="level-header">
+              <input type="checkbox" class="level-checkbox" id="check-1-3" />
+              <h3 class="level-title">Level 1.3: Core Messaging</h3>
+              <span class="level-toggle">+</span>
+            </div>
+            <div class="level-content">
+              <div class="content-section">
+                <h4>Master Slogan:</h4>
+                <pre>Hanuut: Your Neighborhood, Delivered.</pre>
+              </div>
+              <div class="content-section">
+                <h4>B2B Messaging (My Hanuut):</h4>
+                <pre>
+Stop running your business with pen and paper. My Hanuut is the powerful, simple-to-use application that gives local shop owners the tools to succeed online. From digital menus and inventory management to a full point-of-sale system, we help you manage your shop, reach more customers, and grow your sales. Your business, supercharged.</pre
+                >
+              </div>
+              <div class="content-section">
+                <h4>B2C Messaging (Hanuut):</h4>
+                <pre>
+Why order from across town? The best food, groceries, and goods are right in your neighborhood. Hanuut connects you to the local shops you love, making it easier than ever to order online and support your community. Browse menus, track your delivery in real-time, and rediscover your neighborhood.</pre
+                >
+              </div>
+              <div class="level-notes">
+                <textarea
+                  placeholder="Add notes or feedback for this level..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- WORLD 2: ROLLOUT -->
+        <section class="world">
+          <h2 class="world-title">World 2: Rollout Strategy</h2>
+
+          <div class="level" id="level-2-1">
+            <div class="level-header">
+              <input type="checkbox" class="level-checkbox" id="check-2-1" />
+              <h3 class="level-title">
+                Level 2.1: Chronological Targeting Plan
+              </h3>
+              <span class="level-toggle">+</span>
+            </div>
+            <div class="level-content">
+              <div class="content-section">
+                <h4>Primary Target: "Restaurant Fatima" (Food Shops)</h4>
+                <p>
+                  <strong>Justification:</strong> The QR code menu feature
+                  provides immediate, standalone value for in-house dining. This
+                  breaks the "chicken-and-egg" problem by giving vendors a
+                  reason to adopt the platform *before* the consumer marketplace
+                  has users. It's our Trojan horse.
+                </p>
+              </div>
+              <div class="level-notes">
+                <textarea
+                  placeholder="Add notes or feedback for this level..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="level" id="level-2-2">
+            <div class="level-header">
+              <input type="checkbox" class="level-checkbox" id="check-2-2" />
+              <h3 class="level-title">Level 2.2: Vendor Onboarding</h3>
+              <span class="level-toggle">+</span>
+            </div>
+            <div class="level-content">
+              <div class="content-section">
+                <h4>Strategy: The Ground Game</h4>
+                <ul>
+                  <li>
+                    <strong>Goal:</strong> Onboard the first 20 food shops in
+                    one dense, specific neighborhood.
+                  </li>
+                  <li>
+                    <strong>Tactic 1: Founder-Led Sales.</strong> No one else
+                    has the passion. Founders make the first sales.
+                  </li>
+                  <li>
+                    <strong>Tactic 2: The 3 PM Visit.</strong> Physically visit
+                    restaurants between lunch and dinner rush.
+                  </li>
+                  <li>
+                    <strong>Tactic 3: The 5-Minute Demo.</strong> Don't talk,
+                    show. Have a tablet ready. Lead with the QR code menu demo.
+                  </li>
+                  <li>
+                    <strong>Tactic 4: On-the-Spot Onboarding.</strong> Sign them
+                    up, help them upload 5 menu items. Leave them with a live
+                    system.
+                  </li>
+                </ul>
+              </div>
+              <div class="level-notes">
+                <textarea
+                  placeholder="Add notes or feedback for this level..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="level" id="level-2-3">
+            <div class="level-header">
+              <input type="checkbox" class="level-checkbox" id="check-2-3" />
+              <h3 class="level-title">Level 2.3: Customer Acquisition</h3>
+              <span class="level-toggle">+</span>
+            </div>
+            <div class="level-content">
+              <div class="content-section">
+                <h4>Strategy: Hyper-Local Activation</h4>
+                <ul>
+                  <li>
+                    <strong>Goal:</strong> Acquire the first 100 active
+                    customers in the *same* neighborhood.
+                  </li>
+                  <li>
+                    <strong>Condition:</strong> Begin only after 10+ vendors are
+                    live.
+                  </li>
+                  <li>
+                    <strong>Tactic 1: In-Store Marketing.</strong> Provide all
+                    partners with branded table tents and stickers with a QR
+                    code to download the Hanuut app. This is our #1 channel.
+                  </li>
+                  <li>
+                    <strong>Tactic 2: Geo-Fenced Social Ads.</strong> Run
+                    hyper-targeted (1-2km radius) ads featuring photos of the
+                    actual partner restaurants.
+                  </li>
+                  <li>
+                    <strong>Tactic 3: Launch Offer.</strong> "Get 50% Off Your
+                    First Order" to drive initial trial.
+                  </li>
+                </ul>
+              </div>
+              <div class="level-notes">
+                <textarea
+                  placeholder="Add notes or feedback for this level..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="level" id="level-2-4">
+            <div class="level-header">
+              <input type="checkbox" class="level-checkbox" id="check-2-4" />
+              <h3 class="level-title">Level 2.4: Founding Partner Program</h3>
+              <span class="level-toggle">+</span>
+            </div>
+            <div class="level-content">
+              <div class="content-section">
+                <h4>The Offer for the First 10-20 Vendors:</h4>
+                <ul>
+                  <li>
+                    <strong>Zero Commission:</strong> 0% commission on all
+                    marketplace orders for the first 6 months.
+                  </li>
+                  <li>
+                    <strong>VIP Support:</strong> A private WhatsApp/Telegram
+                    group with the founders for instant support.
+                  </li>
+                  <li>
+                    <strong>Feature Prioritization:</strong> Their feedback goes
+                    to the top of the development queue.
+                  </li>
+                  <li>
+                    <strong>Co-Branded Marketing:</strong> We feature their
+                    story on our blog and social media.
+                  </li>
+                </ul>
+              </div>
+              <div class="level-notes">
+                <textarea
+                  placeholder="Add notes or feedback for this level..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- WORLD 3: EXECUTION -->
+        <section class="world">
+          <h2 class="world-title">World 3: Execution</h2>
+
+          <div class="level" id="level-3-1">
+            <div class="level-header">
+              <input type="checkbox" class="level-checkbox" id="check-3-1" />
+              <h3 class="level-title">Level 3.1: Copywriting Samples</h3>
+              <span class="level-toggle">+</span>
+            </div>
+            <div class="level-content">
+              <div class="content-section">
+                <h4>Facebook Ad Copy (Target: Restaurants)</h4>
+                <pre><strong>Headline 1:</strong> Tables Full? Orders Piling Up?
+<strong>Text:</strong> The lunch rush doesn't have to be chaos. Give your customers a simple QR code to order from their table. Orders appear instantly on your screen, with zero mistakes. My Hanuut helps you serve more people, faster.</pre>
+                <pre><strong>Headline 2:</strong> Stop Paying 30% Commission.
+<strong>Text:</strong> It's your food, it should be your profit. My Hanuut gives you a powerful online ordering system without the crippling fees. Get your own online shop on the Hanuut marketplace and take back control.</pre>
+              </div>
+              <div class="level-notes">
+                <textarea
+                  placeholder="Add notes or feedback for this level..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="level" id="level-3-2">
+            <div class="level-header">
+              <input type="checkbox" class="level-checkbox" id="check-3-2" />
+              <h3 class="level-title">Level 3.2: 30s Video Script</h3>
+              <span class="level-toggle">+</span>
+            </div>
+            <div class="level-content">
+              <div class="content-section">
+                <pre>
+(Scene: Fast cuts. Waiter frantically scribbles order. Messy ticket.)
+<strong>VO:</strong> Busy is good. But chaos costs you money. Order mistakes... slow service...
+
+(Scene: Smooth transition. Customer scans QR code. Order appears on a clean POS screen.)
+<strong>VO:</strong> This is My Hanuut. Your customers order directly. Orders are perfect, every time. Your staff focuses on great service.
+
+(Scene: My Hanuut logo and Call to Action.)
+<strong>VO:</strong> Turn tables faster and eliminate errors. Get My Hanuut for your restaurant today.</pre
+                >
+              </div>
+              <div class="level-notes">
+                <textarea
+                  placeholder="Add notes or feedback for this level..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="level" id="level-3-3">
+            <div class="level-header">
+              <input type="checkbox" class="level-checkbox" id="check-3-3" />
+              <h3 class="level-title">Level 3.3: Outreach Email Template</h3>
+              <span class="level-toggle">+</span>
+            </div>
+            <div class="level-content">
+              <div class="content-section">
+                <pre><strong>Subject:</strong> A better way to take orders at [Restaurant Name]?
+
+Hi [Owner's Name],
+
+My name is [Your Name], and I'm a founder of Hanuut, a new platform built to help local restaurants like yours thrive.
+
+I was at your restaurant recently and noticed how busy your team was. What if your customers could order directly from their tables using their phones, sending a perfectly clear order straight to your kitchen?
+
+With My Hanuut, you can set up a digital QR code menu in about 15 minutes. It means:
+- No more handwriting errors.
+- Faster service and happier customers.
+
+We're looking for a few "Founding Partners" and are offering our entire system with **0% commission for the first 6 months.**
+
+Would you be open to a quick 10-minute demo next week?
+
+Best regards,
+[Your Name]
+Founder, Hanuut</pre>
+              </div>
+              <div class="level-notes">
+                <textarea
+                  placeholder="Add notes or feedback for this level..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="level" id="level-3-4">
+            <div class="level-header">
+              <input type="checkbox" class="level-checkbox" id="check-3-4" />
+              <h3 class="level-title">Level 3.4: App Store Description</h3>
+              <span class="level-toggle">+</span>
+            </div>
+            <div class="level-content">
+              <div class="content-section">
+                <pre><strong>Title:</strong> Hanuut: Local Food Delivery
+
+<strong>Description:</strong>
+Tired of the same old delivery options? Discover your neighborhood's best-kept secrets with Hanuut.
+
+Hanuut is the marketplace that connects you directly to the amazing local restaurants and shops just around the corner. Get the food you love from the places you love, delivered faster and fresher than ever before.
+
+- DISCOVER LOCAL GEMS
+- ORDER WITH EASE
+- REAL-TIME TRACKING
+- SUPPORT YOUR COMMUNITY
+
+Stop scrolling, start supporting. Download Hanuut and taste the difference of local.</pre>
+              </div>
+              <div class="level-notes">
+                <textarea
+                  placeholder="Add notes or feedback for this level..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- WORLD 4: ITERATION -->
+        <section class="world">
+          <h2 class="world-title">World 4: Feedback & Iteration</h2>
+
+          <div class="level" id="level-4-1">
+            <div class="level-header">
+              <input type="checkbox" class="level-checkbox" id="check-4-1" />
+              <h3 class="level-title">Level 4.1: Feedback Mechanisms</h3>
+              <span class="level-toggle">+</span>
+            </div>
+            <div class="level-content">
+              <div class="content-section">
+                <ul>
+                  <li>
+                    <strong>1. Vendor VIP Channel (Qualitative):</strong>
+                    Private WhatsApp/Telegram group for Founding Partners for
+                    raw, unfiltered feedback.
+                  </li>
+                  <li>
+                    <strong>2. In-App Customer Surveys (Quantitative):</strong>
+                    After a customer's 3rd order, trigger a simple Net Promoter
+                    Score (NPS) pop-up.
+                  </li>
+                  <li>
+                    <strong>3. Analytics Deep Dive (Behavioral):</strong> Weekly
+                    reviews of analytics dashboards to track user flows and
+                    drop-off points.
+                  </li>
+                  <li>
+                    <strong>4. Founder Conversations (Direct):</strong> Founders
+                    must personally call/visit every vendor monthly to ask "What
+                    do you love?" and "What do you hate?"
+                  </li>
+                </ul>
+              </div>
+              <div class="level-notes">
+                <textarea
+                  placeholder="Add notes or feedback for this level..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="level" id="level-4-2">
+            <div class="level-header">
+              <input type="checkbox" class="level-checkbox" id="check-4-2" />
+              <h3 class="level-title">
+                Level 4.2: Key Performance Indicators (KPIs)
+              </h3>
+              <span class="level-toggle">+</span>
+            </div>
+            <div class="level-content">
+              <div class="content-section">
+                <h4>Top 5 KPIs for First 3 Months:</h4>
+                <ol>
+                  <li>
+                    <strong>Vendor Activation Rate:</strong> % of vendors who
+                    sign up AND get their first order within 7 days.
+                  </li>
+                  <li>
+                    <strong>Average Orders per Active Vendor (weekly):</strong>
+                    Is the platform generating real business for them?
+                  </li>
+                  <li>
+                    <strong>Customer Week 1 to Week 4 Retention:</strong> Do
+                    first-time customers come back? The ultimate test of PMF.
+                  </li>
+                  <li>
+                    <strong>Order Fulfillment Rate:</strong> % of submitted
+                    orders successfully completed. Checks operational health.
+                  </li>
+                  <li>
+                    <strong>Marketplace Liquidity:</strong> % of app visitors
+                    who successfully place an order. Measures supply/demand
+                    health.
+                  </li>
+                </ol>
+              </div>
+              <div class="level-notes">
+                <textarea
+                  placeholder="Add notes or feedback for this level..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const levels = document.querySelectorAll(".level");
+        const allCheckboxes = document.querySelectorAll(".level-checkbox");
+        const allTextareas = document.querySelectorAll(".level-notes textarea");
+        const progressBar = document.getElementById("progressBar");
+        const progressText = document.getElementById("progress-text");
+
+        const saveData = () => {
+          const progress = {};
+          allCheckboxes.forEach((cb) => {
+            progress[cb.id] = cb.checked;
+          });
+          allTextareas.forEach((ta) => {
+            // Create a unique key for the textarea based on its level's ID
+            const noteId = `note-${ta.closest(".level").id}`;
+            progress[noteId] = ta.value;
+          });
+          sessionStorage.setItem("hanuutGTMProgress", JSON.stringify(progress));
+        };
+
+        const loadData = () => {
+          const progress = JSON.parse(
+            sessionStorage.getItem("hanuutGTMProgress")
+          );
+          if (progress) {
+            allCheckboxes.forEach((cb) => {
+              cb.checked = progress[cb.id] || false;
+            });
+            allTextareas.forEach((ta) => {
+              const noteId = `note-${ta.closest(".level").id}`;
+              ta.value = progress[noteId] || "";
+            });
+          }
+          updateProgress();
+        };
+
+        const updateProgress = () => {
+          const checkedCount = Array.from(allCheckboxes).filter(
+            (cb) => cb.checked
+          ).length;
+          const totalCount = allCheckboxes.length;
+          const percentage =
+            totalCount > 0 ? (checkedCount / totalCount) * 100 : 0;
+
+          progressBar.style.width = `${percentage}%`;
+          progressText.textContent = `${Math.round(percentage)}% Complete`;
+        };
+
+        levels.forEach((level) => {
+          const header = level.querySelector(".level-header");
+          header.addEventListener("click", (e) => {
+            // Allow clicking the checkbox itself without toggling content
+            if (e.target.type !== "checkbox") {
+              level.classList.toggle("open");
+            }
+          });
+        });
+
+        allCheckboxes.forEach((cb) => {
+          cb.addEventListener("change", () => {
+            updateProgress();
+            saveData();
+          });
+        });
+
+        allTextareas.forEach((ta) => {
+          ta.addEventListener("input", saveData);
+        });
+
+        // Initial load
+        loadData();
+      });
+    </script>
+  </body>
+</html>

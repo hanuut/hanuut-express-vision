@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale-1.0" />
+    <title>My Hanuut App - Technical Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-color: #f07a48;
+        --secondary-color: #39a170;
+        --background-color: #fffdf5;
+        --text-color: #111217;
+        --surface-color: #ffffff;
+        --border-color: #e8e6db;
+        --sidebar-width: 280px;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Ubuntu", sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        line-height: 1.7;
+      }
+
+      .container {
+        display: flex;
+      }
+
+      .sidebar {
+        width: var(--sidebar-width);
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: var(--surface-color);
+        border-right: 1px solid var(--border-color);
+        overflow-y: auto;
+        padding: 2rem 1.5rem;
+      }
+
+      .sidebar-header {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 2.5rem;
+        color: var(--text-color);
+      }
+
+      .sidebar-header span {
+        color: var(--primary-color);
+      }
+
+      .sidebar nav ul {
+        list-style: none;
+      }
+
+      .sidebar nav li {
+        margin-bottom: 0.5rem;
+      }
+
+      .sidebar nav a {
+        display: block;
+        padding: 0.75rem 1rem;
+        border-radius: 6px;
+        color: #555;
+        text-decoration: none;
+        font-weight: 500;
+        transition: background-color 0.3s, color 0.3s;
+        border-left: 4px solid transparent;
+      }
+
+      .sidebar nav a:hover {
+        background-color: #f0f0f0;
+      }
+
+      .sidebar nav a.active {
+        color: var(--primary-color);
+        background-color: #e8f5e9;
+        border-left-color: var(--primary-color);
+      }
+
+      .content {
+        margin-left: var(--sidebar-width);
+        width: calc(100% - var(--sidebar-width));
+        padding: 2rem 4rem;
+      }
+
+      .content section {
+        padding-top: 4rem;
+        margin-top: -4rem;
+        margin-bottom: 3rem;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 2rem;
+      }
+
+      .content section:last-child {
+        border-bottom: none;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4 {
+        color: var(--text-color);
+      }
+
+      h1 {
+        font-size: 2.8rem;
+        margin-bottom: 1rem;
+      }
+
+      h2 {
+        font-size: 2.2rem;
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--primary-color);
+      }
+
+      h3 {
+        font-size: 1.6rem;
+        color: var(--text-color);
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      p {
+        margin-bottom: 1rem;
+        color: #444;
+        font-size: 1.1rem;
+      }
+
+      ul,
+      ol {
+        margin-left: 20px;
+        margin-bottom: 1rem;
+        color: #444;
+        font-size: 1.1rem;
+      }
+
+      li {
+        margin-bottom: 0.5rem;
+      }
+
+      code {
+        font-family: monospace;
+        background-color: #e8e8e8;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-size: 0.9em;
+        color: var(--text-color);
+      }
+
+      pre {
+        background-color: #f5f5f5;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 1rem;
+        overflow-x: auto;
+        margin-bottom: 1rem;
+      }
+
+      pre code {
+        background-color: transparent;
+        padding: 0;
+        border: none;
+      }
+
+      .card {
+        background-color: var(--surface-color);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .card-title {
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+      }
+
+      .tag {
+        display: inline-block;
+        background-color: var(--secondary-color);
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      @media (max-width: 1024px) {
+        .sidebar {
+          width: 100%;
+          height: auto;
+          position: relative;
+          border-right: none;
+          border-bottom: 1px solid var(--border-color);
+        }
+
+        .content {
+          margin-left: 0;
+          width: 100%;
+          padding: 1.5rem;
+        }
+
+        .content section {
+          padding-top: 2rem;
+          margin-top: -2rem;
+        }
+
+        h1 {
+          font-size: 2.2rem;
+        }
+        h2 {
+          font-size: 1.8rem;
+        }
+        h3 {
+          font-size: 1.4rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <aside class="sidebar">
+        <header class="sidebar-header">My Hanuut<span>.</span>docs</header>
+        <nav id="nav-links">
+          <ul>
+            <li><a href="#chapter-1">1. Introduction</a></li>
+            <li><a href="#chapter-2">2. Architecture</a></li>
+            <li><a href="#chapter-3">3. Folder Structure</a></li>
+            <li><a href="#chapter-4">4. Key Features</a></li>
+            <li><a href="#chapter-5">5. Getting Started</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <header>
+          <h1>My Hanuut Partner App</h1>
+          <p>Technical Documentation for New Developers</p>
+        </header>
+
+        <section id="chapter-1">
+          <h2>Chapter 1: Introduction & Project Overview</h2>
+
+          <h3>1.1. Goal of this Document</h3>
+          <p>
+            Welcome aboard! This document is your comprehensive onboarding
+            manual for the <strong>My Hanuut</strong> application. Our goal is
+            to provide a detailed, developer-focused overview of the project's
+            purpose, architecture, and core technologies. We'll explore not just
+            *what* the code does, but *why* it's structured this way, enabling
+            you to contribute effectively to both its mobile and desktop
+            versions from day one.
+          </p>
+
+          <h3>1.2. Application's Role in the Hanuut Ecosystem</h3>
+          <p>
+            The My Hanuut application is the central command center for our
+            business partners. It's a powerful cross-platform tool built with
+            Flutter, designed to run seamlessly on both mobile (iOS/Android) and
+            desktop (Windows). This dual-platform capability is a core strength,
+            allowing partners to manage their business on the go from their
+            phone or from a dedicated PC at their checkout counter.
+          </p>
+          <div class="card">
+            <p class="card-title">Target Users: Shop Owners & Shop Workers</p>
+            <p>
+              This is the essential application for vendors on the Hanuut
+              platform. It empowers them to manage their digital storefront,
+              process incoming orders, handle inventory, manage staff, and
+              analyze their sales performance. It's the direct counterpart to
+              the 'Hanuut' customer app and the 'Tawsila' driver app,
+              interfacing with the same central Hanuut API.
+            </p>
+          </div>
+
+          <h3>1.3. Core Features</h3>
+          <p>
+            A deep dive into the <code>/features</code> directory reveals the
+            app's robust capabilities, tailored for a professional business
+            environment:
+          </p>
+          <ul>
+            <li>
+              <strong>Dual-Role Authentication:</strong> Secure login system
+              distinguishing between <code>ShopOwner</code> and
+              <code>ShopWorker</code> roles, complete with an invitation and
+              activation flow for employees found in
+              <code>features/ShopWorker</code>.
+            </li>
+            <li>
+              <strong>Order Lifecycle Management:</strong> A complete workflow
+              to handle orders from receiving new "pending" orders, confirming
+              them, marking them as "prepared", to managing delivery, as seen in
+              the <code>features/order</code> module. This includes real-time
+              updates and notifications.
+            </li>
+            <li>
+              <strong>Advanced Point of Sale (POS):</strong> More than just a
+              cart, this feature in <code>features/pos</code> includes barcode
+              scanning support and, critically, full keyboard shortcut
+              integration for fast desktop checkout, evident in
+              <code
+                >core/widgets/keyboard_listeners/main_keyboard_listener_grocery.dart</code
+              >.
+            </li>
+            <li>
+              <strong>Comprehensive Warehouse Management:</strong> The
+              <code>features/product</code> module allows for detailed inventory
+              control, including creating products, managing stock through
+              "shipments" (availabilities), and tracking low-quantity or
+              expiring items.
+            </li>
+            <li>
+              <strong>Financials & Analytics:</strong> The
+              <code>features/cash_flow</code> and
+              <code>shop_revenue</code> modules provide tools for tracking
+              sales, expenses, and viewing performance graphs, giving owners
+              valuable business insights.
+            </li>
+            <li>
+              <strong>Staff Management:</strong> Shop owners can add, view, and
+              manage roles for their shop workers.
+            </li>
+            <li>
+              <strong>Digital Presence Control:</strong> Partners can manage
+              their shop's online information, business hours, delivery zones,
+              and generate a QR Code menu for their customers directly from the
+              app.
+            </li>
+          </ul>
+
+          <h3>1.4. Technology Stack</h3>
+          <p>
+            My Hanuut is built on a modern, robust, and scalable Flutter stack.
+            Understanding these key libraries is essential for development.
+          </p>
+          <div class="card">
+            <span class="tag">Framework: Flutter & Dart</span>
+            <span class="tag">State Management: flutter_riverpod</span>
+            <span class="tag">Routing: auto_route</span>
+            <span class="tag">API Communication: http & http_interceptor</span>
+            <span class="tag"
+              >Local Storage: Hive & flutter_secure_storage</span
+            >
+            <span class="tag">State Modeling: freezed</span>
+            <span class="tag">Localization: Intl (ARB, EN, FR)</span>
+            <span class="tag">Desktop Support: Platform-specific logic</span>
+          </div>
+        </section>
+
+        <section id="chapter-2">
+          <h2>Chapter 2: Architecture & Core Concepts</h2>
+
+          <h3>2.1. High-Level Architecture</h3>
+          <p>
+            The project follows a
+            <strong>feature-first, layered architecture</strong>, heavily
+            inspired by Clean Architecture principles. This design philosophy is
+            fundamental to the codebase, promoting a strict separation of
+            concerns that makes the application maintainable, testable, and
+            adaptable for both mobile and desktop platforms.
+          </p>
+          <p>
+            The structure is divided into two primary layers within the
+            <code>lib</code> directory:
+          </p>
+          <ul>
+            <li>
+              <strong>Core Layer (<code>lib/core</code>):</strong> This is the
+              application's bedrock. It contains shared, application-wide logic
+              that isn't specific to any single business feature. Think of it as
+              a shared toolkit that includes the HTTP client, API interceptors,
+              routing setup (<code>auto_route</code>), global widgets, and local
+              database (<code>Hive</code>) configuration.
+            </li>
+            <li>
+              <strong>Feature Layer (<code>lib/features</code>):</strong> This
+              is where the business logic and user-facing components live. Each
+              feature (e.g., 'auth', 'order', 'product', 'shop') is a
+              self-contained module. Each module strictly adheres to a
+              three-tiered internal structure:
+              <ul>
+                <li>
+                  <strong>Presentation:</strong> The outermost layer, containing
+                  UI elements (Views/Widgets) and state management logic
+                  (Riverpod Notifiers and Providers). It is responsible for
+                  displaying data and capturing user input.
+                </li>
+                <li>
+                  <strong>Domain:</strong> The core of a feature. It contains
+                  the business rules, pure data structures (Entities), and
+                  abstract repository contracts (interfaces). This layer is
+                  completely independent of UI and data sources.
+                </li>
+                <li>
+                  <strong>Data:</strong> The innermost layer, responsible for
+                  fetching and storing data. It contains concrete
+                  implementations of the repositories and the data sources that
+                  make API calls or access the local Hive database.
+                </li>
+              </ul>
+            </li>
+          </ul>
+
+          <h3>2.2. State Management Strategy: Riverpod</h3>
+          <p>
+            We use <strong>Riverpod</strong> for both dependency injection
+            (providing services like repositories) and state management. This
+            choice allows us to write declarative, compile-safe, and highly
+            performant code.
+          </p>
+          <div class="card">
+            <p class="card-title">Why Riverpod?</p>
+            <p>
+              Riverpod decouples our UI from our business logic. Instead of a
+              widget creating its own state or services, it "watches" or "reads"
+              a provider. When the data in a provider changes, only the widgets
+              listening to it are rebuilt. This is highly efficient and prevents
+              unnecessary UI updates.
+            </p>
+          </div>
+          <p>Here’s our typical usage pattern:</p>
+          <ul>
+            <li>
+              <strong><code>Provider</code>:</strong> Used for providing
+              immutable, application-wide services. A prime example is the
+              <code>baseClientProvider</code>, which exposes our configured HTTP
+              client to the rest of the app. Repositories are also provided this
+              way (e.g., `shopRepositoryProvider`).
+            </li>
+            <li>
+              <strong><code>StateNotifierProvider</code>:</strong> The workhorse
+              for managing complex feature state. A
+              <code>StateNotifier</code> (like <code>AuthNotifier</code> or
+              `ShopNotifier`) holds the current state object (e.g., `AuthState`)
+              and exposes public methods to update it. The UI listens to the
+              provider and rebuilds automatically.
+            </li>
+            <li>
+              <strong
+                ><code>FutureProvider</code> &
+                <code>StreamProvider</code>:</strong
+              >
+              Used for handling asynchronous data, such as fetching initial
+              configuration from an API.
+            </li>
+            <li>
+              <strong><code>.family</code> Modifier:</strong> Essential for
+              creating dynamic providers. We use the `.family` modifier to
+              create providers that accept an external parameter, allowing us to
+              fetch or manage state for a specific instance, such as an order
+              with a unique ID:
+              <code>uniqueOrderNotifierProvider('orderId')</code>.
+            </li>
+          </ul>
+          <p>
+            To ensure robust and predictable state, our state classes (e.g.,
+            <code>AuthState</code>, `ShopState`) are built with the
+            <strong>Freezed</strong> package. Freezed generates immutable data
+            classes and powerful pattern-matching methods (`when`, `maybeMap`).
+            This forces developers to handle all possible states (e.g.,
+            `initial`, `loading`, `loaded`, `failure`) within the UI,
+            drastically reducing the chance of runtime errors from unexpected
+            nulls or unhandled states.
+          </p>
+
+          <h3>2.3. API Interaction: A Robust and Resilient Stack</h3>
+          <p>
+            All communication with the Hanuut API is centralized and handled
+            with resilience in mind. The entry point for all network requests is
+            the <code>CustomBaseClientImpl</code> class found in
+            <code>core/network/base_client.dart</code>.
+          </p>
+          <div class="card">
+            <p class="card-title">HTTP Interceptors: The Smart Middlemen</p>
+            <p>
+              We do not make raw <code>http</code> calls directly in our
+              repositories. Instead, we use the
+              <code>http_interceptor</code> package to build a chain of
+              "interceptors" that automatically process every single request and
+              response. This is a powerful pattern for handling cross-cutting
+              concerns like authentication, logging, and error handling.
+            </p>
+          </div>
+          <p>
+            Our interceptor chain is defined in
+            <code>core/interceptors/</code> and includes:
+          </p>
+          <ol>
+            <li>
+              <strong><code>LoggerInterceptor</code>:</strong> For debugging,
+              this interceptor logs the method, URL, headers, and body of every
+              outgoing request, and the status code and body of every incoming
+              response.
+            </li>
+            <li>
+              <strong><code>HttpInterceptor</code>:</strong> This is the
+              security guard. Before a request is sent, it automatically fetches
+              the user's JWT Access Token from secure storage and injects it
+              into the <code>Authorization</code> header.
+            </li>
+            <li>
+              <strong><code>ExpiredTokenRetryPolicy</code>:</strong> This
+              interceptor provides a seamless user experience when a session
+              token expires. If an API request fails with a
+              <code>401 Unauthorized</code> error, it automatically and
+              transparently:
+              <ol>
+                <li>Pauses the original failed request.</li>
+                <li>
+                  Makes a separate, clean API call to the
+                  <code>/auth/refreshToken/...</code> endpoint, using the
+                  long-lived Refresh Token.
+                </li>
+                <li>
+                  If successful, it securely caches the new Access and Refresh
+                  tokens.
+                </li>
+                <li>
+                  Finally, it re-sends the original request with the new token.
+                  To the UI and the user, this looks like a single, slightly
+                  longer network call instead of a disruptive error.
+                </li>
+              </ol>
+            </li>
+          </ol>
+
+          <h3>2.4. Desktop & Cross-Platform Considerations</h3>
+          <p>
+            A key aspect of this project is its support for both mobile and
+            Windows desktop platforms. The architecture is designed to
+            accommodate this from the ground up.
+          </p>
+          <ul>
+            <li>
+              <strong>Platform Checks:</strong> The code uses platform checks
+              like <code>Platform.isWindows</code> (found in
+              <code>core/config/ui.dart</code> and
+              <code>core/db/local_database.dart</code>) to apply
+              platform-specific logic, such as adjusting padding or changing
+              database encryption methods.
+            </li>
+            <li>
+              <strong>Desktop-First Features:</strong> The Point of Sale (POS)
+              system is a prime example of desktop-centric design. The
+              <code
+                >core/widgets/keyboard_listeners/main_keyboard_listener_grocery.dart</code
+              >
+              file implements a global keyboard listener that allows for fast,
+              efficient checkout using keyboard shortcuts—a feature essential
+              for a professional retail environment.
+            </li>
+            <li>
+              <strong>Device Identification:</strong> The app uses the
+              <code>device_info_plus</code> package (as seen in
+              `core/db/local_database.dart`) to identify the specific platform
+              (Android, iOS, Windows) it's running on, which can be used for
+              analytics or platform-specific API calls.
+            </li>
+          </ul>
+          <p>
+            The Clean Architecture pattern is what makes this possible. By
+            separating business logic (Domain) from the UI (Presentation), we
+            can share almost all of the application's code and build tailored
+            user interfaces for both touch-based mobile devices and
+            keyboard-and-mouse-driven desktop environments.
+          </p>
+        </section>
+
+        <section id="chapter-3">
+          <h2>Chapter 3: Folder Structure</h2>
+          <p>
+            Our project's <code>lib</code> directory is organized to reflect our
+            feature-first architecture. This clean separation helps you locate
+            files quickly and understand where to add new functionality.
+          </p>
+          <pre><code>lib/
+├── core/
+│   ├── config/       # Shared UI constants (colors, sizes), themes
+│   ├── db/           # Hive database setup, encryption, local settings
+│   ├── interceptors/ # HTTP interceptors for API requests/responses
+│   ├── l10n/         # Localization files (.arb) for internationalization
+│   ├── network/      # Central API client (BaseClient), providers, error handling
+│   ├── resources/    # Custom Failure & Exception classes for error modeling
+│   ├── routes/       # AutoRoute configuration (router.dart, router.gr.dart)
+│   ├── utils/        # General helper functions (date, string, validators)
+│   └── widgets/      # Common, reusable widgets (CustomButton, dialogs, etc.)
+│
+├── features/
+│   ├── auth/         # Authentication for Shop Owners & Workers
+│   ├── order/        # Order management lifecycle
+│   ├── product/      # Product/Warehouse management
+│   ├── shop/         # Shop profile and settings management
+│   └── ... (many other feature modules like 'address', 'cash_flow', etc.)
+│
+├── main/
+│   ├── env.dart      # Environment config (dev vs. prod API URLs)
+│   ├── main_dev.dart # Entry point for the development flavor
+│   └── main_prod.dart# Entry point for the production flavor
+│
+└── main.dart         # Main application widget setup
+</code></pre>
+
+          <h3>Deep Dive into a Feature Folder</h3>
+          <p>
+            Let's examine a typical feature folder,
+            <code>lib/features/ShopWorker/</code>, to understand the dependency
+            flow. The core principle is that inner layers cannot depend on outer
+            layers (e.g., Data cannot know about Presentation).
+          </p>
+          <div class="card">
+            <p class="card-title">
+              <strong>Presentation Layer</strong> (<code>presentation/</code>)
+            </p>
+            <p>
+              This is the outermost layer, responsible for what the user sees
+              and interacts with.
+            </p>
+            <ul>
+              <li>
+                <code>views/</code>: Contains the main screens, like
+                <code>ManageWorkersScreen</code>. These widgets compose the UI.
+              </li>
+              <li>
+                <code>widgets/</code>: Contains smaller, feature-specific
+                widgets like <code>AddWorkerDialog</code>.
+              </li>
+              <li>
+                <code>state/</code>: Holds the Riverpod
+                <code>StateNotifier</code> (e.g., `ShopWorkerNotifier`) which
+                orchestrates the feature's logic, and the Freezed
+                `ShopWorkerState` class which models the UI's state.
+              </li>
+              <li>
+                It depends on the <strong>Domain</strong> layer to execute
+                business logic.
+              </li>
+            </ul>
+          </div>
+          <div class="card">
+            <p class="card-title">
+              <strong>Domain Layer</strong> (<code>domain/</code>)
+            </p>
+            <p>
+              This layer contains the core business logic, completely
+              independent of the UI and data sources.
+            </p>
+            <ul>
+              <li>
+                <code>entities/</code>: Defines the pure business objects (e.g.,
+                `ShopWorkerEntity`). These are simple Dart classes with no
+                external dependencies.
+              </li>
+              <li>
+                <code>repositories/</code>: Defines the abstract contract (the
+                "interface") for the data layer, like
+                <code>ShopWorkerRepository</code>. It specifies *what* data
+                operations are possible (e.g., `getWorkersByShopId`), but not
+                *how* they are implemented.
+              </li>
+            </ul>
+          </div>
+          <div class="card">
+            <p class="card-title">
+              <strong>Data Layer</strong> (<code>data/</code>)
+            </p>
+            <p>
+              This is the innermost layer, responsible for actually fetching and
+              storing data.
+            </p>
+            <ul>
+              <li>
+                <code>datasources/</code>: Contains the code that interacts with
+                external sources. <code>ShopWorkerRemoteDataSource</code> makes
+                the actual HTTP calls to the API, while
+                <code>ShopWorkerLocalDataSource</code> interacts with the local
+                Hive database for caching.
+              </li>
+              <li>
+                <code>models/</code>: Defines data transfer objects (DTOs) like
+                <code>LocalShopWorkerModel</code> which include Hive annotations
+                for local storage.
+              </li>
+              <li>
+                <code>repositories/</code>: Contains the concrete
+                `ShopWorkerRepositoryImpl`. It implements the domain's
+                repository contract by orchestrating calls to the remote and
+                local data sources to fulfill the request.
+              </li>
+            </ul>
+          </div>
+        </section>
+        <section id="chapter-4">
+          <h2>Chapter 4: Key Features & Implementation</h2>
+
+          <h3>4.1. Authentication (Shop Owner & Worker)</h3>
+          <div class="card">
+            <p>
+              <strong>Description:</strong> This core flow handles how partners
+              sign in or register. The app cleverly distinguishes between a
+              <code>ShopOwner</code> and a <code>ShopWorker</code>, presenting a
+              different UI path for each. This is controlled by the
+              <code>userTypeProvider</code>.
+            </p>
+            <p>
+              <strong>Main Widgets:</strong> <code>LoginScreen</code>,
+              <code>RegisterForm</code>, <code>ShopWorkerLoginForm</code>.
+            </p>
+            <p class="card-title">
+              State Management Flow (Shop Worker Example):
+            </p>
+            <ol>
+              <li>
+                User selects "I'm a Shop Worker" in <code>LoginScreen</code>.
+              </li>
+              <li>
+                The UI prompts for an email. Upon entry, the
+                <code>checkWorkerEmail</code> method in
+                <code>AuthNotifier</code> is called. This hits the
+                <code>POST /auth/worker/check-email</code> API endpoint.
+              </li>
+              <li>
+                The API responds with a status: 'login' if the email exists, or
+                'signup' if it's a new worker being invited.
+              </li>
+              <li>
+                <strong>If 'login':</strong> The <code>AuthState</code> becomes
+                <code>workerNeedsLogin</code>. The UI conditionally shows a
+                password field. On submission, the
+                <code>loginWorker</code> method is called, targeting the
+                <code>POST /auth/login/shopWorker</code> endpoint.
+              </li>
+              <li>
+                <strong>If 'signup':</strong> The <code>AuthState</code> becomes
+                <code>workerNeedsSignup</code>. The UI conditionally shows
+                fields for an activation code, name, and password. On
+                submission, the <code>activateWorker</code> method is called,
+                targeting the <code>POST /auth/worker/activate</code> endpoint.
+              </li>
+              <li>
+                Upon successful login or activation, the API returns JWTs. The
+                <code>AuthRepository</code> caches the tokens and user data in
+                Hive, and the app navigates to the main `Wrapper` screen.
+              </li>
+            </ol>
+          </div>
+
+          <h3>4.2. Order Management Lifecycle</h3>
+          <div class="card">
+            <p>
+              <strong>Description:</strong> The central operational hub for
+              managing incoming customer orders. It's designed to give partners
+              a clear, step-by-step process from order reception to completion.
+            </p>
+            <p>
+              <strong>Main Widgets:</strong> <code>OrderScreen</code>,
+              <code>Pending</code>, <code>Prepared</code>,
+              <code>OrderDetailsScreen</code>.
+            </p>
+            <p class="card-title">State Management Flow:</p>
+            <ol>
+              <li>
+                The <code>OrderScreen</code> displays a TabBar with different
+                order states. When the "Pending" tab is selected, the
+                <code>PendingOrdersNotifier</code>'s `getOnlinePendingOrders`
+                method is invoked.
+              </li>
+              <li>
+                This method calls the repository, which hits the
+                <code>GET /order/findByShopAndState/:shopId/pending</code> API
+                endpoint to fetch new orders.
+              </li>
+              <li>
+                A list of pending orders is displayed. Tapping an order sets the
+                <code>orderProvider</code> and navigates to
+                <code>OrderDetailsScreen</code>.
+              </li>
+              <li>
+                In <code>OrderDetailsScreen</code>, the partner can review the
+                order details and must confirm it by setting a preparation time.
+                This action triggers the `addEstimatePreparationTime` method in
+                <code>OrderNotifier</code>.
+              </li>
+              <li>
+                This, in turn, calls the repository to hit the
+                <code>PUT /order/estimateTime/:orderId</code> API endpoint. Once
+                an estimated time is set, the order is considered "In
+                Preparation".
+              </li>
+              <li>
+                When cooking/packing is complete, the partner marks the order as
+                ready, which calls the `changeState` method to update the
+                order's state to 'prepared' via the
+                <code>PUT /order/:orderId</code> endpoint.
+              </li>
+            </ol>
+          </div>
+
+          <h3>4.3. Point of Sale (POS) & Warehouse</h3>
+          <div class="card">
+            <p>
+              <strong>Description:</strong> The app includes a sophisticated
+              Point of Sale system tailored for both mobile and desktop
+              (Windows) use, which directly interacts with the shop's inventory,
+              referred to as the "Warehouse".
+            </p>
+            <p>
+              <strong>Main Widgets:</strong> <code>ProductsScreen</code>,
+              <code>GlobalProductsScreen</code>, <code>PosProductWidget</code>,
+              `DesktopScanner`, `main_keyboard_listener_grocery.dart`.
+            </p>
+            <p class="card-title">State Management Flow:</p>
+            <ol>
+              <li>
+                From the <code>ProductsScreen</code>, the user enters the POS
+                interface. Products can be added to the current cart (managed by
+                <code>ProductsOnPosNotifier</code>) by tapping them or scanning
+                a barcode.
+              </li>
+              <li>
+                <strong>Desktop Interaction:</strong> On Windows, the
+                <code>main_keyboard_listener_grocery.dart</code> is active. It
+                listens for global keyboard shortcuts (e.g., F1, F2, Ctrl+S) to
+                navigate the UI, add items, and confirm sales without needing a
+                mouse.
+              </li>
+              <li>
+                For products sold by weight (<code>isMeasurable: true</code>), a
+                dialog appears. On desktop, this can integrate with a serial
+                port scale to read the weight directly.
+              </li>
+              <li>
+                When the sale is finalized, the
+                <code>createLocalOrderOnline</code> method is called. This
+                constructs an <code>OrderEntity</code> with
+                <code>isLocal: true</code> and sends it to the
+                <code>POST /order</code> API endpoint.
+              </li>
+              <li>
+                Simultaneously, an <code>AvailabilityTransaction</code> is
+                created and stored locally. This transaction records the
+                decrement in stock for each sold item. The
+                <code>AvailabilityChangeNotifier</code> will later sync this
+                change with the server, ensuring the warehouse inventory is
+                always up-to-date.
+              </li>
+            </ol>
+          </div>
+        </section>
+
+        <section id="chapter-5">
+          <h2>Chapter 5: Getting Started & Developer Setup</h2>
+          <p>
+            Ready to run the code? Here’s your step-by-step guide to setting up
+            the project on your local machine for both mobile and desktop
+            development.
+          </p>
+
+          <h3>5.1. Prerequisites</h3>
+          <p>
+            Before you begin, ensure you have the following software installed
+            and configured on your system:
+          </p>
+          <ul>
+            <li>
+              <strong>Flutter SDK:</strong> Version 3.10 or higher. Make sure to
+              run <code>flutter doctor</code> to confirm your setup is healthy.
+            </li>
+            <li>
+              <strong>Dart SDK:</strong> Comes bundled with the Flutter SDK.
+            </li>
+            <li>
+              <strong>An IDE:</strong> Visual Studio Code with the Flutter
+              extension, or Android Studio/IntelliJ IDEA.
+            </li>
+            <li>
+              <strong>Git:</strong> For cloning the repository from source
+              control.
+            </li>
+            <li>
+              <strong>For Desktop:</strong> If you are developing on Windows,
+              ensure you have Visual Studio 2022 with the "Desktop development
+              with C++" workload installed, as required by Flutter for Windows
+              builds.
+            </li>
+            <li>
+              <strong>An emulator or physical device:</strong> An Android/iOS
+              emulator or a physical device for mobile testing.
+            </li>
+          </ul>
+
+          <h3>5.2. Installation</h3>
+          <p>
+            Follow these commands in your terminal to clone the project and
+            install its dependencies.
+          </p>
+          <pre><code># 1. Clone the repository from your source control
+git clone &lt;your-repository-url&gt;
+
+# 2. Navigate into the project directory
+cd my_hanuut
+
+# 3. Install all the Flutter packages defined in pubspec.yaml
+flutter pub get
+
+# 4. Run the build_runner to generate necessary code for auto_route, freezed, and hive
+dart run build_runner build --delete-conflicting-outputs</code></pre>
+          <p>
+            The final command is crucial. It generates the routing files
+            (`router.gr.dart`), immutable state classes (`*.freezed.dart`), and
+            local database adapters (`*.g.dart`). If you add or modify any state
+            classes or routes, you must re-run this command.
+          </p>
+
+          <h3>5.3. Configuration</h3>
+          <p>
+            The application uses a dedicated file for managing
+            environment-specific configurations, such as API endpoints.
+          </p>
+          <ol>
+            <li>
+              Navigate to and open the file <code>lib/main/env.dart</code>.
+            </li>
+            <li>
+              In the <code>setupEnvironment</code> method, locate the
+              <code>case Environment.dev:</code> block.
+            </li>
+            <li>
+              Modify the <code>_apiUrl</code> string to point to the address of
+              your local Hanuut API instance (e.g.,
+              <code>http://localhost:8800</code> or your machine's local IP
+              address).
+            </li>
+          </ol>
+          <pre><code>// Inside lib/main/env.dart
+static setupEnvironment(Environment env) {
+  _environment = env;
+  switch (env) {
+    case Environment.dev:
+      // IMPORTANT: Change this URL for local development
+      _apiUrl = "http://YOUR_LOCAL_IP:8800"; 
+      break;
+    case Environment.prod:
+      _apiUrl = "https://api.hanuut.com";
+      break;
+  }
+}</code></pre>
+          <p>
+            Additionally, the app uses <code>flutter_dotenv</code> to load
+            sensitive keys (like Mapbox tokens). Create a file named
+            <code>.env</code> in the root of the project and add the required
+            keys as specified in the codebase, for example:
+            <code>MAPBOX_TOKEN=YOUR_KEY_HERE</code>.
+          </p>
+
+          <h3>5.4. Running the App</h3>
+          <p>
+            The project is configured to use Flavors (<code>dev</code> and
+            <code>prod</code>) to separate development and production builds.
+            This ensures you are always connecting to the correct backend and
+            using the right configurations.
+          </p>
+          <p>
+            To run the <strong>development version</strong> of the app on your
+            connected mobile device or emulator, use this command:
+          </p>
+          <pre><code>flutter run --flavor dev -t lib/main/main_dev.dart</code></pre>
+          <p>
+            To run the <strong>production version</strong>, which connects to
+            the live API:
+          </p>
+          <pre><code>flutter run --flavor prod -t lib/main/main_prod.dart</code></pre>
+          <p>
+            To run the app on a <strong>desktop platform</strong> like Windows,
+            first ensure you have enabled it for your project with
+            <code>flutter create . --platforms=windows</code> and then run:
+          </p>
+          <pre><code># Select your desktop device first if needed: flutter devices
+flutter run -d windows --flavor dev -t lib/main/main_dev.dart</code></pre>
+          <p>
+            And that's it! The application should now build and launch. Happy
+            coding!
+          </p>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const navLinks = document.querySelectorAll("#nav-links a");
+        const sections = document.querySelectorAll("main section");
+
+        const observerOptions = {
+          root: null,
+          rootMargin: "0px",
+          threshold: 0.3,
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+          let mostVisibleSectionId = null;
+          let maxVisibleRatio = 0;
+
+          entries.forEach((entry) => {
+            if (
+              entry.isIntersecting &&
+              entry.intersectionRatio > maxVisibleRatio
+            ) {
+              maxVisibleRatio = entry.intersectionRatio;
+              mostVisibleSectionId = entry.target.id;
+            }
+          });
+
+          if (mostVisibleSectionId) {
+            navLinks.forEach((link) => {
+              link.classList.remove("active");
+              if (link.getAttribute("href") === `#${mostVisibleSectionId}`) {
+                link.classList.add("active");
+              }
+            });
+          }
+        }, observerOptions);
+
+        sections.forEach((section) => {
+          if (section.style.display !== "none") {
+            observer.observe(section);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

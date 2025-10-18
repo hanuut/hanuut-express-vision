@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hanuut - The Arris GTM Quest</title>
+    <style>
+      :root {
+        --background-color: #f5f5f7;
+        --card-background: #ffffff;
+        --text-color: #1d1d1f;
+        --text-secondary: #555;
+        --border-color: #d2d2d7;
+        --accent-color: #000;
+        --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: var(--font-family);
+        background-color: var(--background-color);
+        color: var(--text-color);
+        line-height: 1.6;
+        padding: 2rem 1rem;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 3rem;
+        padding: 2rem;
+        background-color: var(--card-background);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+      }
+
+      header h1 {
+        font-size: 2.5rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      header h1 span {
+        font-size: 1.2rem;
+        color: var(--text-secondary);
+        display: block;
+        margin-top: 0.25rem;
+        font-weight: 400;
+      }
+
+      header p {
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
+      }
+
+      .progress-container {
+        width: 100%;
+        background-color: #e9e9eb;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+      }
+
+      .progress-bar {
+        height: 12px;
+        width: 0%;
+        background-color: var(--accent-color);
+        transition: width 0.4s ease-in-out;
+      }
+
+      #progress-text {
+        margin-top: 0.5rem;
+        font-weight: 500;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+      }
+
+      .world {
+        margin-bottom: 4rem;
+      }
+
+      .world-title {
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--border-color);
+      }
+
+      .level {
+        background-color: var(--card-background);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        padding: 1.5rem;
+        transition: box-shadow 0.3s ease;
+      }
+
+      .level:hover {
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      }
+
+      .level-header {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      .level-checkbox {
+        width: 20px;
+        height: 20px;
+        margin-right: 1rem;
+        accent-color: var(--accent-color);
+      }
+
+      .level-title {
+        flex-grow: 1;
+        font-size: 1.2rem;
+        font-weight: 500;
+      }
+
+      .level-toggle {
+        font-size: 1.5rem;
+        font-weight: 500;
+        transition: transform 0.3s ease;
+      }
+
+      .level.open .level-toggle {
+        transform: rotate(45deg);
+      }
+
+      .level-content {
+        display: none;
+        padding-top: 1.5rem;
+        margin-top: 1.5rem;
+        border-top: 1px solid var(--border-color);
+      }
+
+      .level.open .level-content {
+        display: block;
+      }
+
+      .content-section {
+        margin-bottom: 1.5rem;
+      }
+      .content-section h4 {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--text-color);
+      }
+      .content-section p,
+      .content-section ul,
+      .content-section li {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+      }
+      .content-section ul {
+        padding-left: 20px;
+      }
+      .content-section pre {
+        background-color: #f9f9f9;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 1rem;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+      }
+      .content-section code {
+        font-family: monospace;
+        background-color: #e9e9eb;
+        padding: 2px 5px;
+        border-radius: 4px;
+      }
+
+      .level-notes textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        font-family: var(--font-family);
+        font-size: 0.95rem;
+        resize: vertical;
+        min-height: 80px;
+        margin-top: 1rem;
+      }
+
+      .level-notes textarea:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Hanuut GTM Quest <span>The Arris Community Rollout</span></h1>
+        <p>"The Best of Arris, Delivered."</p>
+        <div class="progress-container">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <p id="progress-text">0% Complete</p>
+      </header>
+
+      <main>
+        <!-- WORLD 1: FOUNDATION -->
+        <section class="world">
+          <h2 class="world-title">World 1: Foundation (Arris)</h2>
+
+          <div class="level" id="level-1-1">
+            <div class="level-header">
+              <input type="checkbox" class="level-checkbox" id="check-1-1" />
+              <h3 class="level-title">Level 1.1: Persona Development</h3>
+              <span class="level-toggle">+</span>
+            </div>
+            <div class="level-content">
+              <div class="content-section">
+                <h4>Vendor Personas (Arris Context)</h4>
+                <p>
+                  <strong>1. "Restaurant Fatima":</strong> Her reputation is
+                  everything. Extremely wary of complex tech. A personal
+                  introduction from a trusted source is the *only* way to get a
+                  meeting.
+                </p>
+                <p>
+                  <strong>2. "Grocer Ahmed":</strong> Knows customers by name.
+                  Fears alienating his loyal, older base with "high-tech"
+                  solutions. Sees the younger generation and knows he needs to
+                  adapt.
+                </p>
+              </div>
+              <div class="content-section">
+                <h4>Customer Personas (Arris Context)</h4>
+                <p>
+                  <strong>1. "Convenience-Seeking Sarah":</strong> Young
+                  professional/student who has seen delivery apps in bigger
+                  cities. The perfect evangelist and early adopter.
+                </p>
+                <p>
+                  <strong>2. "Local-Supporter Youssef" (PRIMARY):</strong> The
+                  core of the community. He'll try the app because he wants to
+                  support Fatima, not because he needs convenience. His trust
+                  unlocks the town.
+                </p>
+              </div>
+              <div class="level-notes">
+                <textarea
+                  placeholder="Add notes or feedback for this level..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="level" id="level-1-2">
+            <div class="level-header">
+              <input type="checkbox" class="level-checkbox" id="check-1-2" />
+              <h3 class="level-title">
+                Level 1.2: UVP Crafting (Trust-Focused)
+              </h3>
+              <span class="level-toggle">+</span>
+            </div>
+            <div class="level-content">
+              <div class="content-section">
+                <p>
+                  <strong>For "Restaurant Fatima":</strong> My Hanuut is a
+                  simple, safe partner to help your respected business serve the
+                  next generation, backed by our personal local support.
+                </p>
+                <p>
+                  <strong>For the Arris Customer:</strong> The most trusted way
+                  to order from the best local shops in Arris. We've personally
+                  partnered with the businesses you know and love.
+                </p>
+              </div>
+              <div class="level-notes">
+                <textarea
+                  placeholder="Add notes or feedback for this level..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="level" id="level-1-3">
+            <div class="level-header">
+              <input type="checkbox" class="level-checkbox" id="check-1-3" />
+              <h3 class="level-title">
+                Level 1.3: Core Messaging (Community-Centric)
+              </h3>
+              <span class="level-toggle">+</span>
+            </div>
+            <div class="level-content">
+              <div class="content-section">
+                <h4>Master Slogan:</h4>
+                <pre>Hanuut: The Best of Arris, Delivered.</pre>
+              </div>
+              <div class="content-section">
+                <h4>Core Brand Pillars:</h4>
+                <ul>
+                  <li>
+                    <strong>Trust & Safety:</strong> "Every shop is hand-picked
+                    for its quality. We are your neighbors."
+                  </li>
+                  <li>
+                    <strong>Community Partnership:</strong> "Built for Arris, in
+                    partnership with Arris's best businesses."
+                  </li>
+                  <li>
+                    <strong>Simplicity & Support:</strong> "Incredibly simple
+                    tools, backed by our personal, local support."
+                  </li>
+                </ul>
+              </div>
+              <div class="level-notes">
+                <textarea
+                  placeholder="Add notes or feedback for this level..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- WORLD 2: ROLLOUT -->
+        <section class="world">
+          <h2 class="world-title">World 2: Hyper-Communal Rollout</h2>
+
+          <div class="level" id="level-2-1">
+            <div class="level-header">
+              <input type="checkbox" class="level-checkbox" id="check-2-1" />
+              <h3 class="level-title">Level 2.1: Targeting Plan</h3>
+              <span class="level-toggle">+</span>
+            </div>
+            <div class="level-content">
+              <div class="content-section">
+                <h4>Primary Target: Restaurants</h4>
+                <p>
+                  <strong>Justification:</strong> The QR code menu is the
+                  perfect, low-risk "gentle introduction" to technology. It
+                  improves their existing business before asking them to trust a
+                  new sales channel.
+                </p>
+              </div>
+              <div class="level-notes">
+                <textarea
+                  placeholder="Add notes or feedback for this level..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="level" id="level-2-2">
+            <div class="level-header">
+              <input type="checkbox" class="level-checkbox" id="check-2-2" />
+              <h3 class="level-title">Level 2.2: Vendor Onboarding</h3>
+              <span class="level-toggle">+</span>
+            </div>
+            <div class="level-content">
+              <div class="content-section">
+                <h4>Strategy: The Ground Game (Relationships First)</h4>
+                <ul>
+                  <li>
+                    <strong>Goal:</strong> Onboard 10-15 of the MOST RESPECTED
+                    shops in Arris.
+                  </li>
+                  <li>
+                    <strong>Step 0: Community Mapping.</strong> Ask locals:
+                    "Where are the 3 places a visitor MUST eat?" Target those.
+                  </li>
+                  <li>
+                    <strong>Step 1: The Personal Introduction.</strong> No cold
+                    calls. Get an intro from a respected local. First meeting is
+                    coffee, no sales pitch.
+                  </li>
+                  <li>
+                    <strong>Step 2: The Partnership Demo.</strong> Frame the
+                    tool as a way to help them. Emphasize personal support: "You
+                    call my cell if you have a problem."
+                  </li>
+                  <li>
+                    <strong>Step 3: White-Glove Onboarding.</strong> We do ALL
+                    the work: free professional photos, menu setup, personal
+                    staff training. Goal is ZERO friction.
+                  </li>
+                </ul>
+              </div>
+              <div class="level-notes">
+                <textarea
+                  placeholder="Add notes or feedback for this level..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="level" id="level-2-3">
+            <div class="level-header">
+              <input type="checkbox" class="level-checkbox" id="check-2-3" />
+              <h3 class="level-title">Level 2.3: Customer Acquisition</h3>
+              <span class="level-toggle">+</span>
+            </div>
+            <div class="level-content">
+              <div class="content-section">
+                <h4>Strategy: The Community Launch</h4>
+                <ul>
+                  <li>
+                    <strong>Goal:</strong> Acquire first customers via trust and
+                    word-of-mouth.
+                  </li>
+                  <li>
+                    <strong>Condition:</strong> Begin only after 5-7 top-tier
+                    restaurants are live and happy.
+                  </li>
+                  <li>
+                    <strong>Tactic 1: Community Launch Event.</strong> Host a
+                    physical event at a partner cafe. Offer free coffee for
+                    downloading the app. Puts a human face to the tech.
+                  </li>
+                  <li>
+                    <strong>Tactic 2: In-Store Engine.</strong> High-quality
+                    table tents in every partner location. "Proudly partnered
+                    with Hanuut. Order from home and support us directly!"
+                  </li>
+                  <li>
+                    <strong>Tactic 3: Leverage the Pioneers.</strong> Give each
+                    owner a unique promo code (e.g., "FATIMA25") for their
+                    customers. Tracks word-of-mouth.
+                  </li>
+                  <li>
+                    <strong>Tactic 4: Targeted Social Proof Ads.</strong> Use
+                    photos of specific dishes from well-known local restaurants
+                    in ads.
+                  </li>
+                </ul>
+              </div>
+              <div class="level-notes">
+                <textarea
+                  placeholder="Add notes or feedback for this level..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="level" id="level-2-4">
+            <div class="level-header">
+              <input type="checkbox" class="level-checkbox" id="check-2-4" />
+              <h3 class="level-title">
+                Level 2.4: The "Arris Pioneers" Program
+              </h3>
+              <span class="level-toggle">+</span>
+            </div>
+            <div class="level-content">
+              <div class="content-section">
+                <h4>The Offer for the First Partners:</h4>
+                <ul>
+                  <li>
+                    <strong>High-Value Incentive:</strong> FREE professional
+                    food photography session. Provides huge value to them and
+                    improves our app content.
+                  </li>
+                  <li>
+                    <strong>Core Incentives:</strong> 0% commission for 6
+                    months, VIP personal support (direct founder cell number),
+                    "Arris Pioneer" badge in the app.
+                  </li>
+                </ul>
+              </div>
+              <div class="level-notes">
+                <textarea
+                  placeholder="Add notes or feedback for this level..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- WORLD 3: EXECUTION -->
+        <section class="world">
+          <h2 class="world-title">World 3: Execution (Arris)</h2>
+
+          <div class="level" id="level-3-1">
+            <div class="level-header">
+              <input type="checkbox" class="level-checkbox" id="check-3-1" />
+              <h3 class="level-title">Level 3.1: Ad Copywriting</h3>
+              <span class="level-toggle">+</span>
+            </div>
+            <div class="level-content">
+              <div class="content-section">
+                <h4>Facebook Ad Copy (Community-Focused)</h4>
+                <pre><strong>Headline:</strong> The Best of Arris is Now on Hanuut.
+<strong>Text:</strong> We've partnered with [Restaurant Name 1], [Restaurant Name 2], and [Restaurant Name 3] to bring their amazing food right to your door. Support the local businesses that make our town special. Download the Hanuut app and get your first order delivered. #SupportArris</pre>
+              </div>
+              <div class="level-notes">
+                <textarea
+                  placeholder="Add notes or feedback for this level..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="level" id="level-3-2">
+            <div class="level-header">
+              <input type="checkbox" class="level-checkbox" id="check-3-2" />
+              <h3 class="level-title">Level 3.2: Outreach Message Template</h3>
+              <span class="level-toggle">+</span>
+            </div>
+            <div class="level-content">
+              <div class="content-section">
+                <pre><strong>Subject:</strong> A partnership idea for [Restaurant Name]
+
+Hi [Owner's Name],
+
+[Mutual Connection's Name] suggested I reach out. My name is [Your Name], part of a small, local team building Hanuut to help respected businesses like yours.
+
+We are not another big tech company. We're based here, and our goal is to make it easy and safe for you to offer online ordering, without the headaches.
+
+We're inviting a few of the best restaurants in Arris to be our "Pioneer Partners." We would handle everything for you – from taking professional photos of your food to setting up your digital menu, all at no cost.
+
+Would you be open to a quick coffee next week to chat?
+
+Best regards,
+[Your Name]</pre>
+              </div>
+              <div class="level-notes">
+                <textarea
+                  placeholder="Add notes or feedback for this level..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="level" id="level-3-3">
+            <div class="level-header">
+              <input type="checkbox" class="level-checkbox" id="check-3-3" />
+              <h3 class="level-title">Level 3.3: App Store Description</h3>
+              <span class="level-toggle">+</span>
+            </div>
+            <div class="level-content">
+              <div class="content-section">
+                <pre><strong>Title:</strong> Hanuut: Arris Food Delivery
+
+<strong>Description:</strong>
+Finally, an app for us. Hanuut is the only delivery app built by and for the community of Arris.
+
+We have personally selected the best, most-loved local restaurants and shops to be our partners. When you order on Hanuut, you get the food you love while supporting the families and businesses that are the heart of our town.
+
+- OUR BEST SHOPS: Discover a hand-picked list of Arris's favorite restaurants.
+- SIMPLE & SAFE ORDERING: A clean, easy-to-use app that makes ordering a pleasure.
+- SUPPORT ARRIS: Every order strengthens our local economy.
+
+Download Hanuut and taste the difference of local pride.</pre>
+              </div>
+              <div class="level-notes">
+                <textarea
+                  placeholder="Add notes or feedback for this level..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- WORLD 4: ITERATION -->
+        <section class="world">
+          <h2 class="world-title">
+            World 4: Feedback & Iteration (High-Touch)
+          </h2>
+
+          <div class="level" id="level-4-1">
+            <div class="level-header">
+              <input type="checkbox" class="level-checkbox" id="check-4-1" />
+              <h3 class="level-title">Level 4.1: Feedback Mechanisms</h3>
+              <span class="level-toggle">+</span>
+            </div>
+            <div class="level-content">
+              <div class="content-section">
+                <ul>
+                  <li>
+                    <strong>1. Founder Conversations (Mandatory):</strong>
+                    Weekly personal check-ins (call or visit) with the first 5
+                    partners. This is our #1 intelligence source.
+                  </li>
+                  <li>
+                    <strong>2. In-Person Customer Support:</strong> Team members
+                    available at partner locations during launch to help
+                    customers and gather immediate feedback.
+                  </li>
+                  <li>
+                    <strong>3. The "Problem? Call Me" Card:</strong> Include a
+                    direct support phone number on every order receipt to
+                    demonstrate extreme accountability and build trust.
+                  </li>
+                </ul>
+              </div>
+              <div class="level-notes">
+                <textarea
+                  placeholder="Add notes or feedback for this level..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="level" id="level-4-2">
+            <div class="level-header">
+              <input type="checkbox" class="level-checkbox" id="check-4-2" />
+              <h3 class="level-title">
+                Level 4.2: Key Performance Indicators (KPIs)
+              </h3>
+              <span class="level-toggle">+</span>
+            </div>
+            <div class="level-content">
+              <div class="content-section">
+                <h4>Top 5 KPIs (Trust-Oriented):</h4>
+                <ol>
+                  <li>
+                    <strong>Vendor Satisfaction Score (Qualitative):</strong> A
+                    1-5 score from our weekly check-ins. "How happy are you with
+                    our partnership?" Our most important health metric.
+                  </li>
+                  <li>
+                    <strong>Order Completion Rate:</strong> Must be near 100%.
+                    Every failed order is a major blow to community trust.
+                  </li>
+                  <li>
+                    <strong>Word-of-Mouth Coefficient:</strong> How many new
+                    customers are using the unique promo codes from our vendor
+                    partners?
+                  </li>
+                  <li>
+                    <strong>Customer Retention Rate:</strong> Still a key
+                    indicator of product-market fit and customer satisfaction.
+                  </li>
+                  <li>
+                    <strong>Net Promoter Score (NPS):</strong> "How likely are
+                    you to recommend Hanuut to a friend in Arris?" Measures
+                    community sentiment.
+                  </li>
+                </ol>
+              </div>
+              <div class="level-notes">
+                <textarea
+                  placeholder="Add notes or feedback for this level..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const levels = document.querySelectorAll(".level");
+        const allCheckboxes = document.querySelectorAll(".level-checkbox");
+        const allTextareas = document.querySelectorAll(".level-notes textarea");
+        const progressBar = document.getElementById("progressBar");
+        const progressText = document.getElementById("progress-text");
+
+        const saveData = () => {
+          const progress = {};
+          allCheckboxes.forEach((cb) => {
+            progress[cb.id] = cb.checked;
+          });
+          allTextareas.forEach((ta) => {
+            const noteId = `note-${ta.closest(".level").id}`;
+            progress[noteId] = ta.value;
+          });
+          sessionStorage.setItem(
+            "hanuutGTMProgressArris",
+            JSON.stringify(progress)
+          );
+        };
+
+        const loadData = () => {
+          const progress = JSON.parse(
+            sessionStorage.getItem("hanuutGTMProgressArris")
+          );
+          if (progress) {
+            allCheckboxes.forEach((cb) => {
+              cb.checked = progress[cb.id] || false;
+            });
+            allTextareas.forEach((ta) => {
+              const noteId = `note-${ta.closest(".level").id}`;
+              ta.value = progress[noteId] || "";
+            });
+          }
+          updateProgress();
+        };
+
+        const updateProgress = () => {
+          const checkedCount = Array.from(allCheckboxes).filter(
+            (cb) => cb.checked
+          ).length;
+          const totalCount = allCheckboxes.length;
+          const percentage =
+            totalCount > 0 ? (checkedCount / totalCount) * 100 : 0;
+
+          progressBar.style.width = `${percentage}%`;
+          progressText.textContent = `${Math.round(percentage)}% Complete`;
+        };
+
+        levels.forEach((level) => {
+          const header = level.querySelector(".level-header");
+          header.addEventListener("click", (e) => {
+            if (e.target.type !== "checkbox") {
+              level.classList.toggle("open");
+            }
+          });
+        });
+
+        allCheckboxes.forEach((cb) => {
+          cb.addEventListener("change", () => {
+            updateProgress();
+            saveData();
+          });
+        });
+
+        allTextareas.forEach((ta) => {
+          ta.addEventListener("input", saveData);
+        });
+
+        // Initial load
+        loadData();
+      });
+    </script>
+  </body>
+</html>

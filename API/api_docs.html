@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hanuut API - The Source Code</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=VT323&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --background-color: #1a1a1a;
+        --text-color: #e0e0e0;
+        --primary-color: #00ff00;
+        --secondary-color: #ff00ff;
+        --tertiary-color: #00ffff;
+        --border-color: #333;
+        --font-main: "VT323", monospace;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background-color: var(--background-color);
+        color: var(--text-color);
+        font-family: var(--font-main);
+        margin: 0;
+        padding: 0;
+        font-size: 20px;
+        line-height: 1.6;
+        letter-spacing: 1px;
+        /* Scanline effect */
+        background-image: repeating-linear-gradient(
+          rgba(0, 0, 0, 0.3) 0,
+          rgba(0, 0, 0, 0.3) 1px,
+          transparent 1px,
+          transparent 3px
+        );
+      }
+
+      .container {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: 300px;
+        background-color: #111;
+        border-right: 2px solid var(--primary-color);
+        box-shadow: 5px 0 15px rgba(0, 255, 0, 0.2);
+        position: fixed;
+        height: 100%;
+        overflow-y: auto;
+      }
+
+      .sidebar nav {
+        padding: 2rem 1.5rem;
+      }
+
+      .sidebar h1 {
+        font-size: 2.5rem;
+        color: var(--tertiary-color);
+        text-shadow: 0 0 5px var(--tertiary-color);
+        margin: 0 0 2rem 0;
+        text-align: center;
+      }
+
+      .sidebar ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .sidebar li {
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+      }
+
+      .sidebar a {
+        color: var(--primary-color);
+        text-decoration: none;
+        transition: all 0.2s ease;
+      }
+
+      .sidebar a:hover,
+      .sidebar a.active {
+        color: #fff;
+        text-shadow: 0 0 8px var(--secondary-color);
+        padding-left: 10px;
+      }
+
+      .content {
+        margin-left: 300px;
+        padding: 2rem 4rem;
+        width: calc(100% - 300px);
+      }
+
+      section {
+        border-bottom: 2px dashed var(--border-color);
+        padding-bottom: 3rem;
+        margin-bottom: 3rem;
+      }
+
+      section:last-child {
+        border-bottom: none;
+      }
+
+      h2 {
+        font-size: 3rem;
+        color: var(--primary-color);
+        text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        margin-top: 0;
+        margin-bottom: 1.5rem;
+      }
+
+      h3 {
+        font-size: 2rem;
+        color: var(--tertiary-color);
+        margin-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.5rem;
+      }
+
+      p,
+      ul,
+      li {
+        color: #ccc;
+      }
+
+      a {
+        color: var(--secondary-color);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      code {
+        background-color: #222;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: var(--font-main);
+        color: var(--tertiary-color);
+      }
+
+      .tech-stack {
+        border: 2px solid var(--border-color);
+        border-radius: 8px;
+        padding: 1.5rem;
+        background-color: #222;
+      }
+
+      .tech-stack-grid {
+        display: grid;
+        grid-template-columns: 150px 1fr;
+        gap: 1rem;
+      }
+
+      .tech-stack dt {
+        color: var(--primary-color);
+        font-weight: bold;
+      }
+
+      .ecosystem-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+
+      .app-card {
+        border: 2px solid var(--border-color);
+        padding: 1.5rem;
+        background-color: #222;
+        transition: all 0.3s ease;
+      }
+
+      .app-card:hover {
+        border-color: var(--secondary-color);
+        box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+      }
+
+      .app-card h4 {
+        margin-top: 0;
+        font-size: 1.5rem;
+        color: var(--tertiary-color);
+      }
+
+      /* Mobile Responsive */
+      @media (max-width: 900px) {
+        .container {
+          flex-direction: column;
+        }
+        .sidebar {
+          width: 100%;
+          height: auto;
+          position: relative;
+          border-right: none;
+          border-bottom: 2px solid var(--primary-color);
+        }
+        .content {
+          margin-left: 0;
+          width: 100%;
+          padding: 2rem;
+        }
+        h2 {
+          font-size: 2.5rem;
+        }
+        h3 {
+          font-size: 1.8rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <aside class="sidebar">
+        <nav>
+          <h1>[ Hanuut API ]</h1>
+          <ul id="nav-links">
+            <li>
+              <a href="#introduction" class="active">1. System Overview</a>
+            </li>
+            <li><a href="#website">2. The Website</a></li>
+            <li><a href="#api-architecture">3. API Architecture</a></li>
+            <li><a href="#core-modules">4. Core Modules</a></li>
+            <li><a href="#feature-modules">5. Feature Modules</a></li>
+            <li><a href="#database-schema">6. Database Schema</a></li>
+            <li><a href="#developer-setup">7. Developer Setup</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <section id="introduction">
+          <h2>Welcome, Developer! &gt; 1. System Overview</h2>
+
+          <h3>1.1. Your Quest</h3>
+          <p>
+            Welcome to the source code for the Hanuut API! Think of this as the
+            master control panel, the game engine that powers the entire Hanuut
+            universe. This document is your map. Its goal is to guide you
+            through the digital ecosystem, explain how the different parts
+            communicate, and get you ready to build, debug, and expand the
+            world.
+          </p>
+
+          <h3>1.2. The Hanuut Ecosystem</h3>
+          <p>
+            The API isn't a lone hero; it's the central quest-giver for a party
+            of five distinct client applications. Understanding each player's
+            role is key to understanding the API's design.
+          </p>
+          <div class="ecosystem-grid">
+            <div class="app-card">
+              <h4>&gt; Hanuut [Customer App]</h4>
+              <p>
+                The main player-facing app. Customers use this to browse quests
+                (shops), collect loot (products), and track their couriers
+                (drivers).
+              </p>
+            </div>
+            <div class="app-card">
+              <h4>&gt; My Hanuut [Vendor App]</h4>
+              <p>
+                The merchant's toolkit. Shop owners manage their storefront,
+                inventory, and incoming quests (orders). This is their command
+                center.
+              </p>
+            </div>
+            <div class="app-card">
+              <h4>&gt; Tawsila [Driver App]</h4>
+              <p>
+                The mount for our couriers. Drivers use this to find and accept
+                delivery missions, navigate the world, and track their gold
+                (earnings).
+              </p>
+            </div>
+            <div class="app-card">
+              <h4>&gt; hanuut.com [Website]</h4>
+              <p>
+                The public face of the kingdom. It's a marketing hub, a
+                recruitment board for new partners, a public library (blog), and
+                a direct portal for e-commerce.
+              </p>
+            </div>
+            <div class="app-card">
+              <h4>&gt; Admin Dashboard</h4>
+              <p>
+                The Ruler-mode panel. Used by the Hanuut team to oversee the
+                entire game world, manage players and NPCs, and view system-wide
+                stats.
+              </p>
+            </div>
+          </div>
+
+          <h3>1.3. Core Features [API Capabilities]</h3>
+          <p>
+            The API provides a rich set of features to make the ecosystem
+            function. At its core, it enables:
+          </p>
+          <ul>
+            <li>Multi-role user authentication and management.</li>
+            <li>
+              Hierarchical product catalog management (from domains down to
+              individual items).
+            </li>
+            <li>
+              A complete order and delivery lifecycle from creation to
+              completion.
+            </li>
+            <li>Payment processing via the SATIM gateway.</li>
+            <li>Real-time push notifications to all client types.</li>
+            <li>Image and file management via Cloudinary.</li>
+          </ul>
+
+          <h3>1.4. Technology Stack [Character Sheet]</h3>
+          <p>
+            Here are the stats for our main character, the API, and its primary
+            companion, the website:
+          </p>
+          <div class="tech-stack">
+            <dl class="tech-stack-grid">
+              <dt>Backend:</dt>
+              <dd>NestJS (Node.js)</dd>
+              <dt>Language:</dt>
+              <dd>TypeScript</dd>
+              <dt>Database:</dt>
+              <dd>MongoDB with Mongoose</dd>
+              <dt>Authentication:</dt>
+              <dd>JWT with Passport.js</dd>
+              <dt>Real-time:</dt>
+              <dd>WebSockets (Socket.IO)</dd>
+              <dt>Notifications:</dt>
+              <dd>Firebase Admin SDK</dd>
+              <dt>Payments:</dt>
+              <dd>SATIM Gateway</dd>
+              <dt>Image Storage:</dt>
+              <dd>Cloudinary</dd>
+              <dt>Frontend:</dt>
+              <dd>React (Website) & Flutter (Mobile Apps)</dd>
+            </dl>
+          </div>
+        </section>
+
+        <!-- The next chapters will be added here -->
+        <section id="website">
+          <h2>Level 2: The Website [hanuut.com]</h2>
+
+          <h3>2.1. Mission Briefing</h3>
+          <p>
+            The
+            <a href="https://hanuut.com" target="_blank">hanuut.com</a> website
+            is the public face of our world. It’s built with React and serves
+            multiple critical roles. Think of it as the town square, the
+            recruitment guild, and a direct marketplace all in one.
+          </p>
+
+          <h3>2.2. Player Journeys [Key Functions]</h3>
+          <p>The website is designed for three main types of users:</p>
+          <div class="ecosystem-grid">
+            <div class="app-card">
+              <h4>&gt; The Curious Visitor</h4>
+              <p>
+                This user is exploring. The site acts as a marketing hub,
+                explaining what Hanuut is, how it works, and showcasing our
+                values through the homepage and blog.
+              </p>
+            </div>
+            <div class="app-card">
+              <h4>&gt; The Aspiring Partner</h4>
+              <p>
+                Potential shop owners and drivers come here to join our ranks.
+                The website provides forms to submit their information, which
+                the API processes as a <code>SubscribeRequest</code>.
+              </p>
+            </div>
+            <div class="app-card">
+              <h4>&gt; The Direct Shopper</h4>
+              <p>
+                Each shop gets a unique URL (e.g.,
+                <code>hanuut.com/@username</code>). This turns the website into
+                a dynamic storefront, allowing customers to browse and place
+                orders directly from their browser, which the API handles as a
+                "POS" or "Global" order.
+              </p>
+            </div>
+          </div>
+
+          <h3>2.3. Frontend Architecture [The Spellbook]</h3>
+          <p>
+            The website is a modern Single Page Application (SPA). Here’s what’s
+            inside its spellbook:
+          </p>
+          <div class="tech-stack">
+            <dl class="tech-stack-grid">
+              <dt>Framework:</dt>
+              <dd>React</dd>
+              <dt>State Mgmt:</dt>
+              <dd>Redux (with Redux Toolkit)</dd>
+              <dt>Styling:</dt>
+              <dd>Styled-Components (CSS-in-JS)</dd>
+              <dt>Routing:</dt>
+              <dd>React Router</dd>
+              <dt>Localization:</dt>
+              <dd>i18next (for AR, EN, FR)</dd>
+              <dt>API Comms:</dt>
+              <dd>Axios</dd>
+            </dl>
+          </div>
+          <br />
+          <p>
+            State is managed globally with Redux. When a component needs data
+            (like shop details), it dispatches an async thunk. This thunk calls
+            a service function that uses Axios to hit an API endpoint. The data
+            is then stored in the Redux slice, and the component re-renders with
+            the new information.
+          </p>
+
+          <h3>2.4. Key API Interactions [Opening Portals]</h3>
+          <p>
+            The website relies on several key API endpoints to function. Most of
+            these are marked with the <code>@Public()</code> decorator in the
+            API to allow access without a JWT.
+          </p>
+          <ul>
+            <li>
+              <code>GET /shop/findByUsername/:username</code>: The most
+              important endpoint. It fetches all public data for a shop to
+              render its dynamic storefront.
+            </li>
+            <li>
+              <code>POST /partnerSubscribeRequest</code>: Submits the form data
+              from aspiring partners and drivers.
+            </li>
+            <li>
+              <code>GET /feedback/posts/blog</code> &
+              <code>/feedback/slug/:slug</code>: Fetches blog posts for the
+              content section of the site.
+            </li>
+            <li>
+              <code>POST /order/pos</code> & <code>/order/global</code>: Allows
+              customers to place orders directly from a shop's web page without
+              needing the mobile app.
+            </li>
+            <li>
+              <code>GET /image/:id</code>: Retrieves images for shops, products,
+              and blog posts.
+            </li>
+          </ul>
+        </section>
+        <section id="api-architecture">
+          <h2>Level 3: API Architecture [The World Map]</h2>
+
+          <h3>3.1. Design Philosophy: Modular & Feature-Based</h3>
+          <p>
+            Our API is built like a well-organized RPG world. Instead of one
+            giant, confusing city, the world is divided into distinct regions
+            (<strong>Modules</strong>), each responsible for its own quests and
+            characters. This is the core of the NestJS feature-based
+            architecture.
+          </p>
+          <p>You'll find the code split into two main continents:</p>
+          <ul>
+            <li>
+              <code>src/core</code>: The capital city. This is where universal
+              laws and shared resources are kept. Think of it as the home of
+              core game mechanics like authentication rules (Guards), magical
+              shortcuts (Decorators), and global services.
+            </li>
+            <li>
+              <code>src/features</code>: The sprawling kingdoms. Each
+              sub-directory here is a self-contained module for a specific
+              business domain, like <code>OrderModule</code>,
+              <code>ShopModule</code>, or <code>DriverModule</code>. Each
+              kingdom has its own rulers (Controllers), scribes (Services), and
+              laws of nature (Schemas).
+            </li>
+          </ul>
+
+          <h3>3.2. Request Lifecycle [The Quest Path]</h3>
+          <p>
+            Every time a player (a client app) sends a request to the API, it
+            follows a predictable path through one of these kingdoms.
+          </p>
+          <div class="ecosystem-grid">
+            <div class="app-card">
+              <h4>1. The Gatekeeper (Controller)</h4>
+              <p>
+                The request first arrives at a
+                <code>*.controller.ts</code> file. The controller acts as the
+                city gate guard. Its only job is to check the player's
+                credentials (validate incoming data like DTOs) and direct them
+                to the right person inside the city. It handles HTTP details
+                like routes, parameters, and status codes.
+              </p>
+            </div>
+            <div class="app-card">
+              <h4>2. The Quest Giver (Service)</h4>
+              <p>
+                The controller passes the request to a
+                <code>*.service.ts</code> file. The service is the quest giver,
+                the brains of the operation. It contains all the business logic.
+                It decides what needs to happen, fetches information from
+                ancient scrolls (the database), and might even talk to other
+                quest givers (other services) to complete a complex task.
+              </p>
+            </div>
+            <div class="app-card">
+              <h4>3. The Ancient Scrolls (Model/Schema)</h4>
+              <p>
+                The service interacts with the database through a
+                <code>*.schema.ts</code> file. This file defines the structure
+                of our data using Mongoose schemas. The service uses these
+                "scrolls" to read, write, update, or delete records from the
+                MongoDB database.
+              </p>
+            </div>
+          </div>
+
+          <h3>3.3. Security Checkpoint [Authentication & Authorization]</h3>
+          <p>
+            By default, our world is a restricted area. We use a "deny-all"
+            approach to security, which means every endpoint is protected unless
+            we explicitly make it public.
+          </p>
+          <ul>
+            <li>
+              <strong>The Global Guard:</strong> In <code>main.ts</code>, we've
+              stationed a global guard, the <code>AccessTokenAuthGuard</code>,
+              at the main entrance to our world. It checks every single incoming
+              request for a valid JWT (JSON Web Token) in the
+              <code>Authorization</code> header. If the token is missing or
+              invalid, the request is immediately turned away.
+            </li>
+            <li>
+              <strong>The Public Pass (<code>@Public()</code>):</strong> For
+              areas that need to be accessible to everyone (like the login page,
+              registration, or public shop pages), we use a special pass. The
+              <code>@Public()</code> decorator marks a route as a public space.
+              When our global guard sees this mark, it waves the request through
+              without checking for a token.
+            </li>
+            <li>
+              <strong>Role-Specific Gates:</strong> For logging in, we have
+              different gates for different types of players (customers, shop
+              owners, etc.). Guards like
+              <code>LocalCustomerAuthGuard</code> ensure that only a customer
+              can try to log in through the customer gate, preventing a driver
+              from trying to access a shop owner's account.
+            </li>
+          </ul>
+        </section>
+        <section id="core-modules">
+          <h2>Level 4: Core Modules & Concepts [Game Engine Mechanics]</h2>
+          <p>
+            The <code>src/core</code> directory is the heart of the game engine.
+            It provides the foundational systems that all other feature modules
+            rely on. Let's look under the hood.
+          </p>
+
+          <h3>4.1. Configuration [The Game Settings]</h3>
+          <p>
+            Hardcoding secrets and settings is a game-over scenario. We use
+            NestJS's <code>ConfigModule</code> to manage all our environment
+            variables.
+          </p>
+          <ul>
+            <li>
+              <strong>Loading:</strong> In <code>app.module.ts</code>, we load
+              the <code>ConfigModule</code> globally. It reads variables from a
+              <code>.env</code> file at the project root.
+            </li>
+            <li>
+              <strong>Access:</strong> Any service can inject the
+              <code>ConfigService</code> to safely access variables like
+              database connection strings (<code>DATABASE_HOST_PROD</code>) or
+              JWT secrets (<code>AT_SECRET</code>).
+            </li>
+            <li>
+              <strong>File:</strong> The <code>core/config/config.ts</code> file
+              structures these variables, making them easily accessible
+              throughout the app (e.g.,
+              <code>configService.get('database.host')</code>).
+            </li>
+          </ul>
+
+          <h3>4.2. Database [The Save File]</h3>
+          <p>
+            Our world's state is saved in a MongoDB database. We connect to it
+            using the <code>MongooseModule</code>.
+          </p>
+          <ul>
+            <li>
+              <strong>Connection:</strong> The connection is configured
+              asynchronously in <code>app.module.ts</code>. This allows us to
+              first load the <code>ConfigModule</code> and then use the
+              <code>ConfigService</code> to get the correct database URI based
+              on the environment (dev vs. prod).
+            </li>
+            <li>
+              <strong>Resilience:</strong> We automatically add resilience
+              options like <code>serverSelectionTimeoutMS</code> to the URI.
+              This helps the API survive brief network hiccups without crashing,
+              ensuring a stable connection to our save file.
+            </li>
+            <li>
+              <strong>Schemas:</strong> Each feature module defines its own data
+              structures (<code>*.schema.ts</code>) and registers them with
+              Mongoose using <code>MongooseModule.forFeature()</code>.
+            </li>
+          </ul>
+
+          <h3>4.3. Authentication Deep Dive [The Key Master]</h3>
+          <p>
+            Authentication is the most critical core system. It's managed by the
+            <code>AuthModule</code> but its components are used globally. Here's
+            the level design:
+          </p>
+          <div class="ecosystem-grid">
+            <div class="app-card">
+              <h4>&gt; The Tokens: Access & Refresh</h4>
+              <p>
+                We use a standard JWT two-token strategy. <br /><strong
+                  >Access Token (AT):</strong
+                >
+                Short-lived (e.g., 15 minutes). Used to access protected
+                resources. Contains user ID and role. <br /><strong
+                  >Refresh Token (RT):</strong
+                >
+                Long-lived (e.g., 7 days). Used only to get a new access token
+                when the old one expires.
+              </p>
+            </div>
+            <div class="app-card">
+              <h4>&gt; The Guards: Access & Refresh</h4>
+              <p>
+                Two main guards protect our routes. <br /><code
+                  >AccessTokenAuthGuard</code
+                >: The global bouncer. It checks for a valid AT on every request
+                unless a route is marked <code>@Public()</code>. <br /><code
+                  >RefreshTokenAuthGuard</code
+                >: A specialized guard used only on the "refresh token"
+                endpoints. It validates the RT.
+              </p>
+            </div>
+            <div class="app-card">
+              <h4>&gt; The Strategies: JWT & Local</h4>
+              <p>
+                Passport.js uses "strategies" to define authentication logic.
+                <br /><code>AccessTokenStrategy</code> &
+                <code>RefreshTokenStrategy</code>: These tell Passport how to
+                read and validate our JWTs using the secrets from our
+                <code>.env</code> file. <br /><code>Local...Strategy</code>: We
+                have a unique "local" strategy for each user role
+                (<code>customer</code>, <code>shopOwner</code>, etc.). These
+                handle the username/password login process for each specific
+                role.
+              </p>
+            </div>
+            <div class="app-card">
+              <h4>&gt; The Login Flow</h4>
+              <p>
+                1. User sends credentials to a login endpoint (e.g.,
+                <code>/auth/login/shopOwner</code>).<br />2. The
+                <code>LocalShopOwnerAuthGuard</code> triggers the
+                <code>LocalShopOwnerStrategy</code>.<br />3. The strategy
+                validates the credentials against the database.<br />4. If
+                valid, the <code>AuthService</code> generates a new Access and
+                Refresh token pair.<br />5. The RT is stored in the database for
+                that user, and both tokens are sent back to the client.
+              </p>
+            </div>
+          </div>
+
+          <h3>4.4. Notifications [The Town Crier]</h3>
+          <p>
+            We use the Firebase Admin SDK to send push notifications to our
+            mobile apps. The logic is centralized in the
+            <code>NotificationHandlerImpl</code> service, which is part of the
+            <code>CoreModule</code>.
+          </p>
+          <ul>
+            <li>
+              <strong>Initialization:</strong> The
+              <code>FirebaseModule</code> initializes the connection to Firebase
+              using credentials from <code>key.json</code>.
+            </li>
+            <li>
+              <strong>Centralized Logic:</strong> The
+              <code>NotificationHandlerImpl</code> contains specific,
+              pre-written methods for every type of notification (e.g.,
+              <code>notifyShopOwner()</code>,
+              <code>notifyCustomerAboutDriverArriving()</code>). This keeps our
+              notification logic consistent and easy to manage from one place.
+            </li>
+          </ul>
+        </section>
+        <section id="feature-modules">
+          <h2>Level 5: Feature Modules [Exploring the Kingdoms]</h2>
+          <p>
+            Now we venture out from the capital city and explore the different
+            kingdoms of the API. Each feature module in the
+            <code>src/features</code> directory represents a distinct domain of
+            our world, with its own unique quests and inhabitants.
+          </p>
+
+          <h3>5.1. User & Identity Management</h3>
+          <p>
+            These modules define the different "player classes" in our world.
+            Each has a schema defining its attributes and a service for managing
+            its data.
+          </p>
+          <div class="ecosystem-grid">
+            <div class="app-card">
+              <h4>&gt; CustomerModule</h4>
+              <p>
+                Manages end-users who place orders. Stores personal info,
+                addresses, and Firebase tokens for notifications. Primarily used
+                by the <strong>Hanuut App</strong>.
+              </p>
+            </div>
+            <div class="app-card">
+              <h4>&gt; ShopOwnerModule</h4>
+              <p>
+                Manages the accounts of business owners. This is separate from
+                the <code>Shop</code> itself, allowing one owner to potentially
+                have multiple shops. Used by the <strong>My Hanuut App</strong>.
+              </p>
+            </div>
+            <div class="app-card">
+              <h4>&gt; ShopWorkerModule</h4>
+              <p>
+                A new class of user who can be invited by a Shop Owner to help
+                manage a shop. They have specific roles and permissions. Used by
+                the <strong>My Hanuut App</strong>.
+              </p>
+            </div>
+            <div class="app-card">
+              <h4>&gt; DriverModule</h4>
+              <p>
+                Manages delivery personnel. Stores vehicle information,
+                real-time location (<code>actualPositionCoordinates</code>),
+                mission history, and ratings. Used by the
+                <strong>Tawsila App</strong>.
+              </p>
+            </div>
+          </div>
+
+          <h3>5.2. Product & Catalog Hierarchy</h3>
+          <p>
+            This is the backbone of our e-commerce system. Products are
+            organized in a strict hierarchy, allowing for powerful filtering and
+            organization. This is primarily managed via the
+            <strong>Admin Dashboard</strong> and <strong>My Hanuut App</strong>.
+          </p>
+          <div class="ecosystem-grid">
+            <div class="app-card">
+              <h4>&gt; DomainModule</h4>
+              <p>
+                The highest level. Defines broad business types like "Food" or
+                "Grocery". This is key for differentiating experiences on the
+                website.
+              </p>
+            </div>
+            <div class="app-card">
+              <h4>&gt; ProductClassModule</h4>
+              <p>
+                The next level down from Domain. For "Grocery", this might be
+                "Dairy" or "Bakery".
+              </p>
+            </div>
+            <div class="app-card">
+              <h4>&gt; FamilyModule</h4>
+              <p>
+                A sub-division of a Class. Inside "Dairy", you might have "Milk"
+                or "Cheese".
+              </p>
+            </div>
+            <div class="app-card">
+              <h4>&gt; CategoryModule</h4>
+              <p>
+                The most granular level. Inside "Cheese", you could have "Hard
+                Cheese" or "Soft Cheese". A <code>Product</code> must belong to
+                a <code>Category</code>.
+              </p>
+            </div>
+            <div class="app-card">
+              <h4>&gt; ProductModule</h4>
+              <p>
+                Defines the global template for a product (e.g., "Coca-Cola 33cl
+                Can"). It contains the barcode, brand, description, and the
+                <code>categoryId</code> it belongs to.
+              </p>
+            </div>
+            <div class="app-card">
+              <h4>&gt; ProductShopModule</h4>
+              <p>
+                This is the crucial link. It represents a specific
+                <code>Product</code> being sold at a specific <code>Shop</code>.
+                It stores the shop-specific price, quantity, and availability
+                details. This is what customers actually add to their cart.
+              </p>
+            </div>
+          </div>
+
+          <h3>5.3. Order & Delivery Lifecycle</h3>
+          <p>
+            These modules manage the entire process from a customer placing an
+            order to it being delivered. This is the core gameplay loop.
+          </p>
+          <div class="ecosystem-grid">
+            <div class="app-card">
+              <h4>&gt; OrderModule</h4>
+              <p>
+                Handles the creation and state management of customer orders.
+                The <code>OrderSchema</code> is one of the most complex, storing
+                customer info, product items, pricing, delivery details, and a
+                history of state changes (e.g., 'pending' -> 'prepared' ->
+                'done'). It communicates heavily with all client apps.
+              </p>
+            </div>
+            <div class="app-card">
+              <h4>&gt; DeliveryMissionModule</h4>
+              <p>
+                Manages the logistics of getting an order from the shop to the
+                customer. When an order needs delivery, a
+                <code>DeliveryMission</code> is created. It contains
+                pickup/dropoff details and a list of
+                <code>candidateDrivers</code> who are notified. It's the primary
+                module for the <strong>Tawsila App</strong>.
+              </p>
+            </div>
+          </div>
+
+          <h3>5.4. Payment & Transactions</h3>
+          <p>These modules handle the flow of money through the system.</p>
+          <div class="ecosystem-grid">
+            <div class="app-card">
+              <h4>&gt; SatimModule</h4>
+              <p>
+                A dedicated module for interacting with the SATIM payment
+                gateway. It exposes three main endpoints:
+                <code>registerOrder</code> (to get a payment URL),
+                <code>confirmOrder</code> (to verify a payment after the user
+                returns), and <code>refundOrder</code>.
+              </p>
+            </div>
+            <div class="app-card">
+              <h4>&gt; OnlinePaymentTransactionModule</h4>
+              <p>
+                Acts as a ledger. When a SATIM payment is confirmed, a detailed
+                record of the transaction is created here, linking the payment
+                to the master <code>Order</code> document. This provides a clear
+                audit trail.
+              </p>
+            </div>
+            <div class="app-card">
+              <h4>&gt; ShopPaymentModule</h4>
+              <p>
+                Manages payments related to shops, such as subscription fees or
+                payouts for orders. It's used for internal accounting.
+              </p>
+            </div>
+          </div>
+
+          <h3>5.5. Supporting Modules</h3>
+          <p>
+            These modules provide essential services that support the main
+            features.
+          </p>
+          <div class="ecosystem-grid">
+            <div class="app-card">
+              <h4>&gt; ImageModule & CloudinaryModule</h4>
+              <p>
+                Handles all image uploads. The <code>/upload</code> endpoint
+                sends a file directly to Cloudinary and returns a URL. This is
+                used across all apps for profile pictures, shop logos, and
+                product images.
+              </p>
+            </div>
+            <div class="app-card">
+              <h4>&gt; AddressModule & ZoneModule</h4>
+              <p>
+                Manages geographical data. Zones define service areas (e.g., a
+                city district), while Addresses store specific user locations
+                with latitude/longitude.
+              </p>
+            </div>
+            <div class="app-card">
+              <h4>&gt; SubscriptionPlanModule & ShopSubscriptionModule</h4>
+              <p>
+                Manages the SaaS aspect of the business. Admins create
+                <code>SubscriptionPlan</code>s, and when a shop subscribes, a
+                <code>ShopSubscription</code> document is created to track its
+                active plan and features.
+              </p>
+            </div>
+            <div class="app-card">
+              <h4>&gt; FeedbackModule</h4>
+              <p>
+                A versatile module used for both user feedback/support tickets
+                and for managing the content of the public blog on the website.
+              </p>
+            </div>
+          </div>
+        </section>
+        <section id="database-schema">
+          <h2>Level 6: Database Schema [The Ancient Blueprints]</h2>
+          <p>
+            Welcome to the archives. Here we'll examine the blueprints for the
+            most critical structures in our database. Understanding these
+            Mongoose schemas is key to understanding how data flows through the
+            Hanuut world.
+          </p>
+
+          <h3>6.1. The User Schemas [Player Character Sheets]</h3>
+          <p>
+            Each user role has its own collection and schema, defining their
+            unique attributes and abilities. All of them include fields for
+            authentication like <code>password</code> and
+            <code>refreshToken</code>.
+          </p>
+          <ul>
+            <li>
+              <code>CustomerSchema</code>: Stores <code>firstName</code>,
+              <code>phoneNumber</code>, an array of saved
+              <code>addresses</code>, and a <code>firebaseToken</code> for
+              notifications. This is the standard player character.
+            </li>
+            <li>
+              <code>ShopOwnerSchema</code>: A simpler schema with
+              <code>firstName</code>, <code>email</code>, and
+              <code>phoneNumber</code>. It's the profile for the guild master.
+            </li>
+            <li>
+              <code>ShopWorkerSchema</code>: Similar to a Shop Owner but
+              includes a <code>shopId</code> reference to link them to their
+              workplace and an array of <code>roles</code> defining their
+              permissions.
+            </li>
+            <li>
+              <code>DriverSchema</code>: A more complex sheet. Includes
+              <code>vehicle</code> details, an array of
+              <code>servedZones</code>, real-time
+              <code>actualPositionCoordinates</code>, and performance stats like
+              <code>rating</code> and <code>nbAccepted</code> missions.
+            </li>
+          </ul>
+
+          <h3>6.2. The Shop Schema [The Guild Hall]</h3>
+          <p>
+            The <code>ShopSchema</code> is a central hub of information. It
+            defines everything about a merchant's presence in our world.
+          </p>
+          <div class="tech-stack">
+            <dl class="tech-stack-grid">
+              <dt>Identity:</dt>
+              <dd>
+                <code>name</code>, <code>description</code>,
+                <code>imageId</code>, and a unique <code>username</code> for its
+                web URL.
+              </dd>
+              <dt>Ownership:</dt>
+              <dd>
+                <code>ownerId</code> links to the <code>ShopOwner</code> who
+                created it.
+              </dd>
+              <dt>Operation:</dt>
+              <dd>
+                <code>openingTime</code>, <code>closingTime</code>,
+                <code>workingDays</code>, and a boolean
+                <code>isOpen</code> flag.
+              </dd>
+              <dt>Location:</dt>
+              <dd>
+                <code>addressId</code> and an array of
+                <code>servedZones</code> define where the shop is and where it
+                can deliver to.
+              </dd>
+              <dt>Catalog Links:</dt>
+              <dd>
+                Arrays of <code>categories</code>, <code>families</code>, and
+                <code>classes</code> link to the parts of the product hierarchy
+                it participates in.
+              </dd>
+              <dt>Status:</dt>
+              <dd>
+                Flags like <code>isValidated</code> and
+                <code>canSellOnline</code> control its visibility and
+                capabilities on the platform.
+              </dd>
+              <dt>Subscription:</dt>
+              <dd>
+                <code>subscriptionPlanId</code> links to its active
+                subscription, controlling features and commission rates.
+              </dd>
+            </dl>
+          </div>
+
+          <h3>6.3. The Product Schemas [The Armory & Item Ledger]</h3>
+          <p>
+            The product system is split into two key schemas that work together.
+          </p>
+          <ul>
+            <li>
+              <code>ProductSchema</code>: This is the **global item template**.
+              It defines what an item *is*. For example, a "Coca-Cola Can
+              330ml". It has a unique <code>codeBar</code>, <code>brand</code>,
+              <code>name</code>, and a reference to its <code>categoryId</code>.
+              It does NOT contain price or quantity.
+            </li>
+            <li>
+              <code>ProductShopSchema</code>: This is the **instance of an item
+              in a specific shop**. It links a <code>productId</code> to a
+              <code>shopId</code>. This document is where the shop-specific
+              <code>sellingPrice</code> and total <code>quantity</code> are
+              stored. It is the "item in the vendor's inventory."
+            </li>
+          </ul>
+
+          <h3>6.4. The Order Schema [The Quest Log]</h3>
+          <p>
+            The <code>OrderSchema</code> is the most active and complex
+            document. It's the official record of a transaction and its entire
+            lifecycle.
+          </p>
+          <div class="tech-stack">
+            <dl class="tech-stack-grid">
+              <dt>Participants:</dt>
+              <dd>
+                References to <code>customerId</code>, <code>shopId</code>, and
+                eventually a <code>driverId</code>.
+              </dd>
+              <dt>Items:</dt>
+              <dd>
+                An embedded array of <code>products</code>, storing a snapshot
+                of each item at the time of purchase (title, price, quantity).
+              </dd>
+              <dt>Logistics:</dt>
+              <dd>
+                Stores the <code>deliveryAddressId</code>,
+                <code>deliveryOptionId</code>, and any delivery notes.
+              </dd>
+              <dt>Financials:</dt>
+              <dd>
+                Includes fields for <code>totalPrice</code>,
+                <code>deliveryPricing</code>, <code>discount</code>, and the
+                <code>commission</code> rates.
+              </dd>
+              <dt>State Machine:</dt>
+              <dd>
+                A <code>state</code> string (e.g., 'pending', 'prepared',
+                'done') tracks the current status. An array called
+                <code>stateChanges</code> logs a timestamped history of every
+                status update, creating a full audit trail for the order's
+                journey.
+              </dd>
+            </dl>
+          </div>
+        </section>
+        <section id="developer-setup">
+          <h2>Level 7: Developer Setup [Starting Your Own Server]</h2>
+          <p>
+            Alright, time to get your hands dirty and compile the source code.
+            Follow these steps to launch your own local instance of the Hanuut
+            API.
+          </p>
+
+          <h3>7.1. Prerequisites [Required Gear]</h3>
+          <p>
+            Before you begin, make sure you have the right gear equipped. You'll
+            need the following software installed on your machine:
+          </p>
+          <ul>
+            <li><strong>Node.js:</strong> Version 16.x or higher.</li>
+            <li>
+              <strong>npm</strong> or <strong>yarn:</strong> Your package
+              manager of choice.
+            </li>
+            <li>
+              <strong>MongoDB:</strong> A running instance of MongoDB, either
+              locally or on a cloud service like MongoDB Atlas.
+            </li>
+            <li>
+              <strong>NestJS CLI:</strong> (Optional but recommended) Install it
+              globally with <code>npm i -g @nestjs/cli</code>.
+            </li>
+          </ul>
+
+          <h3>7.2. Installation [Assembling the Artifact]</h3>
+          <p>Follow these commands in your terminal to assemble the project.</p>
+          <pre><code># 1. Clone the repository from your source control
+git clone &lt;your-repository-url&gt;
+
+# 2. Navigate into the project directory
+cd hanuut-api
+
+# 3. Install all the necessary packages
+npm install</code></pre>
+
+          <h3>7.3. Configuration [Setting the Game Rules]</h3>
+          <p>
+            The API needs a set of rules to run. These are stored in an
+            environment file.
+          </p>
+          <ol>
+            <li>
+              Create a new file in the root of the project named
+              <code>.env</code>.
+            </li>
+            <li>
+              Copy the contents of <code>.env.example</code> (if it exists) or
+              add the variables below.
+            </li>
+            <li>
+              Fill in the values with your local configuration. At a minimum,
+              you'll need the database host and JWT secrets.
+            </li>
+          </ol>
+          <pre><code># -- Core App Config --
+PORT=5000
+NODE_ENV=dev
+
+# -- Database --
+# Your MongoDB connection string for development
+DATABASE_HOST_DEV=mongodb://localhost:27017
+# Your MongoDB connection string for production
+DATABASE_HOST_PROD=your_production_mongodb_uri
+
+# -- JWT Secrets (Generate your own random strings for these!) --
+AT_SECRET=your-super-secret-access-token-key
+AT_EXPIRES_IN=15m
+RT_SECRET=your-super-secret-refresh-token-key
+RT_EXPIRES_IN=7d
+
+# -- Session Secret --
+SESSION_SECRET=another-random-secret-for-sessions
+
+# -- Cloudinary (Optional - for image uploads) --
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+
+# -- SATIM Payment Gateway (Optional - for payments) --
+SATIM_USERNAME=your_satim_username
+SATIM_PASSWORD=your_satim_password
+SATIM_TERMINAL_ID=your_satim_terminal_id
+
+# -- Firebase (Optional - for notifications) --
+# You will also need to add your 'key.json' file in the 'src/core/config/' directory.
+</code></pre>
+
+          <h3>7.4. Launching the Server [Press Start]</h3>
+          <p>With everything configured, you're ready to launch.</p>
+          <pre><code># To run the server in development mode with auto-reloading
+npm run start:dev</code></pre>
+          <p>If all goes well, you'll see a message in your console:</p>
+          <p>
+            <code>Application is running on: http://0.0.0.0:5000</code>
+          </p>
+          <p>
+            Congratulations, developer! Your local server is now live. You can
+            access the API documentation generated by Swagger at
+            <a href="http://localhost:5000/api-docs" target="_blank"
+              >http://localhost:5000/api-docs</a
+            >
+            to test the endpoints. Happy coding!
+          </p>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const navLinks = document.querySelectorAll("#nav-links a");
+        const sections = document.querySelectorAll("main section");
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                navLinks.forEach((link) => {
+                  link.classList.remove("active");
+                  if (link.getAttribute("href") === `#${entry.target.id}`) {
+                    link.classList.add("active");
+                  }
+                });
+              }
+            });
+          },
+          { threshold: 0.5 }
+        );
+
+        sections.forEach((section) => {
+          if (section.style.display !== "none") {
+            // Only observe visible sections
+            observer.observe(section);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

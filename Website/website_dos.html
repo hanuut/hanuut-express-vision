@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hanuut.com - Developer Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #39A170;
+            --secondary-color: #F07A48;
+            --background-color: #FFFDF5;
+            --surface-color: #FFFFFF;
+            --text-color: #111217;
+            --text-secondary-color: #555;
+            --border-color: #EAEAEA;
+            --font-main: 'Ubuntu', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: var(--font-main);
+            margin: 0;
+            padding: 0;
+            font-size: 18px;
+            line-height: 1.7;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        .sidebar {
+            width: 280px;
+            background-color: var(--surface-color);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .sidebar nav {
+            padding: 2rem 1.5rem;
+        }
+
+        .sidebar .logo {
+            font-size: 1.8rem;
+            color: var(--text-color);
+            font-weight: 700;
+            margin: 0 0 2.5rem 0;
+            text-align: center;
+        }
+        
+        .sidebar .logo span {
+            color: var(--primary-color);
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar li {
+            margin-bottom: 0.8rem;
+        }
+
+        .sidebar a {
+            color: var(--text-secondary-color);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 1.1rem;
+            display: block;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        .sidebar a:hover {
+            background-color: #f4f4f4;
+            color: var(--text-color);
+        }
+        
+        .sidebar a.active {
+            background-color: var(--primary-color);
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .content {
+            margin-left: 280px;
+            padding: 2.5rem 4rem;
+            width: calc(100% - 280px);
+        }
+
+        section {
+            padding-bottom: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        h2 {
+            font-size: 2.8rem;
+            color: var(--text-color);
+            margin-top: 0;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        p, ul, li {
+            color: var(--text-secondary-color);
+        }
+
+        a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        code {
+            background-color: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-family: monospace;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            background-color: var(--surface-color);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+             transform: translateY(-5px);
+             box-shadow: 0 8px 20px rgba(0,0,0,0.07);
+        }
+
+        .card h4 {
+            margin-top: 0;
+            font-size: 1.3rem;
+            color: var(--primary-color);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .sidebar nav {
+                padding: 1rem;
+            }
+            .content {
+                margin-left: 0;
+                width: 100%;
+                padding: 2rem 1.5rem;
+            }
+            h2 {
+                font-size: 2rem;
+            }
+            h3 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <nav>
+                <h1 class="logo">Hanuut<span>.com</span> Docs</h1>
+                <ul id="nav-links">
+                    <li><a href="#introduction" class="active">1. Project Overview</a></li>
+                    <li><a href="#architecture">2. Architecture & Tech</a></li>
+                    <li><a href="#folder-structure">3. Folder Structure</a></li>
+                    <li><a href="#state-management">4. State (Redux)</a></li>
+                    <li><a href="#routing">5. Routing</a></li>
+                    <li><a href="#api-interaction">6. API Interaction</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <section id="introduction">
+                <h2>1. Introduction & Project Overview</h2>
+                
+                <h3>1.1. Goal of this Document</h3>
+                <p>
+                    Welcome, web developer! This guide is your map to the <code>hanuut.com</code> React application. Its purpose is to get you up to speed quickly on the project's architecture, key concepts, and development patterns. By the end, you'll understand how the website functions as a critical part of the larger Hanuut ecosystem and how it communicates with the central API.
+                </p>
+
+                <h3>1.2. Role in the Hanuut Ecosystem</h3>
+                <p>
+                    The website is more than just a landing page; it's a dynamic application with three core missions. Understanding these goals is key to understanding its features and code structure.
+                </p>
+                <div class="card-grid">
+                    <div class="card">
+                        <h4>Marketing & Information Hub</h4>
+                        <p>This is the public face of the company. It explains the value of the Hanuut, My Hanuut, and Tawsila apps. It also hosts the company blog and legal pages like the Privacy Policy.</p>
+                    </div>
+                    <div class="card">
+                        <h4>Partner Onboarding Portal</h4>
+                        <p>Aspiring shop owners and drivers begin their journey here. The site provides dedicated forms that capture their information and submit it to the API to begin the validation process.</p>
+                    </div>
+                    <div class="card">
+                        <h4>Direct E-commerce Platform</h4>
+                        <p>Every validated shop gets a unique, public-facing URL (e.g., <code>hanuut.com/@username</code>). The website dynamically renders a digital menu or product catalog at this URL, allowing customers to place orders directly through their browser.</p>
+                    </div>
+                </div>
+                
+                <h3>1.3. The Technology Stack</h3>
+                <p>
+                    The website is a modern Single Page Application (SPA) built with a standard and effective set of tools.
+                </p>
+                <div class="card">
+                    <ul>
+                        <li><strong>Framework:</strong> React</li>
+                        <li><strong>State Management:</strong> Redux with Redux Toolkit</li>
+                        <li><strong>Styling:</strong> Styled-Components (CSS-in-JS)</li>
+                        <li><strong>Routing:</strong> React Router</li>
+                        <li><strong>Localization (i18n):</strong> i18next, supporting Arabic, English, and French.</li>
+                        <li><strong>API Communication:</strong> Axios</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="architecture">
+    <h2>2. Architecture & Tech Stack</h2>
+
+    <h3>2.1. Core Architectural Pattern</h3>
+    <p>
+        The `hanuut.com` website is a <strong>Single Page Application (SPA)</strong> built with React. This means the server sends a nearly empty HTML file, and JavaScript is responsible for rendering all the content and handling user interactions dynamically in the browser.
+    </p>
+    <p>
+        We use a <strong>modular, feature-based architecture</strong>. The code is organized into folders by feature (e.g., <code>/modules/Partners</code>, <code>/modules/Product</code>, <code>/modules/Cart</code>). Each feature folder contains its own components, services, and Redux state logic, making the codebase easier to maintain and scale.
+    </p>
+
+    <h3>2.2. Technology Deep Dive</h3>
+    <p>
+        Let's take a closer look at the key libraries and how we use them.
+    </p>
+
+    <div class="card-grid">
+        <div class="card">
+            <h4>React</h4>
+            <p>We use modern React with functional components and hooks (<code>useState</code>, <code>useEffect</code>, <code>useMemo</code>). This keeps our components clean and state logic predictable.</p>
+        </div>
+        <div class="card">
+            <h4>Redux Toolkit</h4>
+            <p>This is the heart of our state management. It provides a centralized "store" for application-wide data, like user info, shop details, and cart items. We use <code>createSlice</code> for predictable state updates and <code>createAsyncThunk</code> for handling API calls.</p>
+        </div>
+        <div class="card">
+            <h4>React Router</h4>
+            <p>Manages all client-side navigation. The main routing logic is in <code>components/CustomRouter.js</code>, which uses React's <code>lazy</code> loading to split code and improve initial load times for less-visited pages.</p>
+        </div>
+        <div class="card">
+            <h4>Styled-Components</h4>
+            <p>We use this CSS-in-JS library for all our styling. It allows us to write actual CSS scoped to a single component, making our styles modular and preventing conflicts. Theme variables for colors and fonts are defined in <code>config/Themes.js</code>.</p>
+        </div>
+        <div class="card">
+            <h4>i18next</h4>
+            <p>Handles all internationalization (i18n). Text is stored in JSON files (<code>local/en.json</code>, etc.) and accessed via the <code>useTranslation</code> hook. This allows us to easily switch between English, Arabic, and French.</p>
+        </div>
+        <div class="card">
+            <h4>Axios</h4>
+            <p>Our go-to library for making HTTP requests to the Hanuut API. Service files (e.g., <code>modules/Partners/services/shopServices.js</code>) contain reusable functions that use Axios to fetch or submit data.</p>
+        </div>
+    </div>
+</section>
+            <section id="folder-structure">
+    <h2>3. Folder Structure</h2>
+    <p>
+        The project is organized to be intuitive and scalable. Understanding the layout will help you locate files quickly and know where to add new ones.
+    </p>
+
+    <div class="card">
+        <ul>
+            <li><code>/src</code>
+                <ul>
+                    <li><code>/assets</code>: Static files like images, icons, and fonts are stored here.</li>
+                    <li><code>/components</code>: Home to reusable, "dumb" components that are shared across the entire application. Examples include <code>ActionButton.js</code>, <code>Logo.js</code>, and <code>Loader.js</code>. These components typically don't have their own state or business logic.</li>
+                    <li><code>/config</code>: Contains global configuration files. This is where we define the visual theme (<code>Themes.js</code>) and global CSS rules (<code>GlobalStyles.js</code>).</li>
+                    <li><code>/data</code>: Holds static data used by the application, such as the list of Algerian Wilayas and Cities in <code>data.js</code>.</li>
+                    <li><code>/local</code>: Contains the JSON files for internationalization (<code>ar.json</code>, <code>en.json</code>, <code>fr.json</code>).</li>
+                    <li><code>/modules</code>: <strong>This is the most important directory.</strong> It contains all the application's features, organized by domain. Each folder inside <code>/modules</code> represents a major feature.</li>
+                    <li><code>App.js</code>: The main root component of the application.</li>
+                    <li><code>i18n.js</code>: Configuration file for the i18next library.</li>
+                    <li><code>store.js</code>: Where the Redux store is configured and all the individual reducers are combined.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <h3>Deep Dive: The <code>/modules</code> Directory</h3>
+    <p>
+        Each feature module within <code>/modules</code> follows a consistent internal structure. Let's take <code>/modules/Partners</code> as an example:
+    </p>
+    
+    <div class="card">
+        <ul>
+            <li><code>/modules/Partners</code>
+                <ul>
+                    <li><code>/components</code>: Contains React components that are specific to the "Partners" feature, such as <code>PartnersHero.js</code> or <code>ShopHeader.js</code>.</li>
+                    <li><code>/services</code>: Includes JavaScript files for making API calls related to partners and shops (e.g., <code>shopServices.js</code>). These services use Axios to communicate with the backend.</li>
+                    <li><code>/state</code>: Home to the Redux logic for this feature. <code>reducers.js</code> defines the Redux slice, including its initial state, reducers, and async thunks.</li>
+                    <li><code>PartnersPage.js</code>: The main "page" component that assembles the various components to create the full partners page.</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <br>
+    <p>
+        This modular pattern is repeated for other features like <code>Blog</code>, <code>Product</code>, and <code>Cart</code>. When you need to work on a feature, you can be confident that all its related files (components, API calls, and state logic) are co-located within its module folder.
+    </p>
+</section>
+            <section id="state-management">
+    <h2>4. State Management [The Central Store]</h2>
+    
+    <h3>4.1. Why Redux?</h3>
+    <p>
+        In a complex app like ours, many components need to access the same data (e.g., the current shop's details, the items in the shopping cart). Instead of passing this data down through many layers of props ("prop drilling"), we use Redux to create a single, centralized "store" for our application's state. Any component can access or update this store directly.
+    </p>
+    <p>
+        We use <strong>Redux Toolkit</strong>, which simplifies Redux development and helps us write cleaner, more maintainable code.
+    </p>
+
+    <h3>4.2. The Core Concepts</h3>
+    <div class="card-grid">
+        <div class="card">
+            <h4>The Store</h4>
+            <p>The single source of truth for the entire application's state. It is created in <code>store.js</code> by combining all the individual reducers.</p>
+        </div>
+        <div class="card">
+            <h4>Slices</h4>
+            <p>A "slice" of the Redux state. Each feature module has its own slice (e.g., <code>shopsSlice</code>, <code>cartSlice</code>). This is defined in the feature's <code>state/reducers.js</code> file using <code>createSlice</code>.</p>
+        </div>
+        <div class="card">
+            <h4>Reducers</h4>
+            <p>Pure functions that specify how the application's state changes in response to an action. In Redux Toolkit, these are written inside the <code>reducers</code> and <code>extraReducers</code> objects of a slice.</p>
+        </div>
+        <div class="card">
+            <h4>Actions & Dispatch</h4>
+            <p>To change the state, you "dispatch" an action. Components do this using the <code>useDispatch</code> hook. Actions are either simple state updates or triggers for async operations.</p>
+        </div>
+    </div>
+
+    <h3>4.3. The Data Flow: Fetching Shop Data</h3>
+    <p>
+        Let's trace how a component gets data from the API and displays it.
+    </p>
+    <ol>
+        <li>
+            <strong>Component Mounts:</strong> The <code>ShopPageWithUsername</code> component mounts. It gets the <code>username</code> from the URL.
+        </li>
+        <li>
+            <strong>Dispatching a Thunk:</strong> Inside a <code>useEffect</code> hook, the component calls <code>dispatch(fetchShopWithUsername(username))</code>.
+        </li>
+        <li>
+            <strong>Async Thunk Execution:</strong> The <code>fetchShopWithUsername</code> thunk (defined in <code>modules/Partners/state/reducers.js</code> using <code>createAsyncThunk</code>) is executed.
+        </li>
+        <li>
+            <strong>API Service Call:</strong> The thunk calls the <code>getShopByUsername(username)</code> function from <code>modules/Partners/services/shopServices.js</code>. This service function makes the actual Axios GET request to the API.
+        </li>
+        <li>
+            <strong>Reducer Updates State:</strong>
+            <ul>
+                <li>When the thunk starts, the <code>fetchShopWithUsername.pending</code> reducer sets <code>state.loading = true</code>.</li>
+                <li>When the API call succeeds, the <code>fetchShopWithUsername.fulfilled</code> reducer sets <code>state.loading = false</code> and puts the returned shop data into <code>state.selectedShop</code>.</li>
+                <li>If it fails, the <code>fetchShopWithUsername.rejected</code> reducer sets <code>state.loading = false</code> and saves the error message in <code>state.error</code>.</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Component Re-renders:</strong> The <code>ShopPageWithUsername</code> component, which is subscribed to the store via the <code>useSelector</code> hook, detects the state change. It now has access to the <code>selectedShop</code> data and re-renders to display it.
+        </li>
+    </ol>
+    <p>
+        This one-way data flow (Component -> Action -> Reducer -> State -> Component) is fundamental to how the application works and ensures that our state updates are predictable and easy to debug.
+    </p>
+</section>
+            <section id="routing">
+    <h2>5. Routing & Page Structure [Navigation Map]</h2>
+    
+    <h3>5.1. The Router's Brain: <code>CustomRouter.js</code></h3>
+    <p>
+        All navigation within the website is handled by React Router. The central configuration file for this is <code>/src/components/CustomRouter.js</code>. This component defines all the valid URL paths and maps them to the React components that should be rendered for each path.
+    </p>
+
+    <h3>5.2. Code Splitting with Lazy Loading</h3>
+    <p>
+        To improve the initial load performance of the site, we don't load the code for every single page at once. We use React's <code>lazy()</code> function in <code>CustomRouter.js</code> to split our code.
+    </p>
+    <pre><code>// Example from CustomRouter.js
+const PrivacyPolicy = lazy(() => import("../modules/PrivacyPolicy"));
+// ...
+&lt;Route path="/privacy_policy" element={&lt;PrivacyPolicy /&gt;} /&gt;</code></pre>
+    <p>
+        This tells the browser to only download the JavaScript for the <code>PrivacyPolicy</code> page when a user actually navigates to the <code>/privacy_policy</code> URL. While the code is being downloaded, the <code>&lt;Suspense&gt;</code> component in <code>CustomRouter.js</code> will render the fallback <code>&lt;Loader /&gt;</code> component.
+    </p>
+    
+    <h3>5.3. Key Routes</h3>
+    <p>
+        Here are the most important routes and the components they render.
+    </p>
+    <div class="card">
+        <dl class="tech-stack-grid">
+            <dt><code>/</code></dt>
+            <dd>Renders the main marketing <code>HomePage</code>.</dd>
+
+            <dt><code>/partners</code></dt>
+            <dd>Renders the <code>PartnersPage</code>, which is the landing page for attracting new shop owners.</dd>
+            
+            <dt><code>/blog</code></dt>
+            <dd>Renders the <code>BlogListPage</code>, showing a grid of all blog posts.</dd>
+            
+            <dt><code>/blog/:slug</code></dt>
+            <dd>Renders the <code>BlogPostPage</code>, displaying the full content of a single article based on its URL slug.</dd>
+            
+            <dt><code>/:username</code></dt>
+            <dd>This is the dynamic route for a shop's public storefront. It renders the <code>ShopPageWithUsername</code> component, which then intelligently decides which layout to show (Grocery, Food Menu, or Global E-commerce) based on the shop's domain.</dd>
+
+            <dt><code>/payment/process</code></dt>
+            <dd>A utility page that takes order details from URL parameters, registers the order with the API to get a SATIM payment link, and then redirects the user to the payment gateway.</dd>
+
+            <dt><code>/payment/result</code></dt>
+            <dd>The page the user is sent back to after a SATIM payment attempt. It takes the <code>orderId</code> from the URL, confirms the payment status with our API, and displays a success or failure message.</dd>
+
+            <dt><code>/deeplink/...</code></dt>
+            <dd>A special set of routes that handle deep linking from the web to our mobile apps. These routes render the <code>DeepLinkRedirect</code> component, which attempts to open the corresponding screen in the Hanuut app or redirects the user to the Play Store if the app isn't installed.</dd>
+        </dl>
+    </div>
+</section>
+            <section id="api-interaction">
+    <h2>6. API Interaction [Communicating with the Server]</h2>
+    
+    <h3>6.1. The Bridge: Axios Services</h3>
+    <p>
+        All communication between the React application and the Hanuut API is handled through a set of dedicated "service" files. These files are located within the <code>/services</code> folder of each feature module (e.g., <code>/modules/Partners/services/shopServices.js</code>).
+    </p>
+    <p>
+        The primary goal of these services is to abstract away the details of making HTTP requests. Instead of writing Axios code directly in our components, we call simple, clearly-named functions.
+    </p>
+    <pre><code>// Example from shopServices.js
+import axios from 'axios';
+
+const prodUrl = process.env.REACT_APP_API_PROD_URL;
+const headers = { "Content-Type": "application/json" };
+
+export const getShopByUsername = (username) => {
+  return axios.get(`${prodUrl}/shop/findByUsername/${username}`, { headers });
+};</code></pre>
+    <p>
+        This pattern keeps our components clean and makes our API calls reusable and easy to manage from one place.
+    </p>
+
+    <h3>6.2. The Request Flow Revisited</h3>
+    <p>
+        Building on what we learned in the State Management chapter, the full interaction flow from user action to rendered data looks like this:
+    </p>
+    <div class="card-grid">
+        <div class="card">
+            <h4>1. User Action</h4>
+            <p>A component mounts or a user clicks a button, triggering a <code>useEffect</code> or an event handler.</p>
+        </div>
+        <div class="card">
+            <h4>2. Dispatch Thunk</h4>
+            <p>The component dispatches a Redux async thunk (e.g., <code>dispatch(fetchShopWithUsername(...))</code>).</p>
+        </div>
+        <div class="card">
+            <h4>3. Call Service</h4>
+            <p>The async thunk calls the relevant service function (e.g., <code>getShopByUsername(...)</code>).</p>
+        </div>
+        <div class="card">
+            <h4>4. Axios Request</h4>
+            <p>The service function builds the URL and uses Axios to send the HTTP request to the API.</p>
+        </div>
+        <div class="card">
+            <h4>5. Update State</h4>
+            <p>The thunk resolves, and the corresponding Redux reducer updates the state with the fetched data or an error.</p>
+        </div>
+        <div class="card">
+            <h4>6. Re-render UI</h4>
+            <p>The component, subscribed to the state via <code>useSelector</code>, automatically re-renders to display the new data.</p>
+        </div>
+    </div>
+    
+    <h3>6.3. Handling Configuration</h3>
+    <p>
+        Key configuration details for API interaction are stored in environment variables, which are loaded by React at build time.
+    </p>
+    <ul>
+        <li><code>REACT_APP_API_PROD_URL</code>: This is the most important variable. It holds the base URL for the Hanuut API. All service files read this variable to know where to send their requests.</li>
+    </ul>
+    <p>
+        By using environment variables, we can easily switch between a local development API and the live production API without changing any code.
+    </p>
+
+    <h3>6.4. A Note on Error Handling</h3>
+    <p>
+        Errors are handled at multiple levels. If an Axios request fails (e.g., a 404 Not Found), the service function will throw an error. The Redux async thunk catches this error and uses <code>rejectWithValue</code> to pass an error message to the <code>.rejected</code> reducer. This sets an <code>error</code> property in the state, which components can read to display a user-friendly error message.
+    </p>
+</section>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${entry.target.id}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { threshold: 0.4 });
+
+            sections.forEach(section => {
+                 // Check if the section is not hidden before observing
+                if (section.style.display !== 'none') {
+                    observer.observe(section);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

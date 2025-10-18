@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tawsila Driver App - Technical Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #5F96CF;
+            --secondary-color: #397FF9;
+            --background-color: #FFFDF5;
+            --text-color: #111217;
+            --surface-color: #ffffff;
+            --border-color: #e8e6db;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Ubuntu', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.7;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: var(--surface-color);
+            border-right: 1px solid var(--border-color);
+            overflow-y: auto;
+            padding: 2rem 1.5rem;
+        }
+
+        .sidebar-header {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+            color: var(--text-color);
+        }
+
+        .sidebar-header span {
+            color: var(--primary-color);
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+        }
+
+        .sidebar nav li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar nav a {
+            display: block;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            color: #555;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s, color 0.3s;
+            border-left: 4px solid transparent;
+        }
+
+        .sidebar nav a:hover {
+            background-color: #f0f0f0;
+        }
+
+        .sidebar nav a.active {
+            color: var(--primary-color);
+            background-color: #e8f5e9;
+            border-left-color: var(--primary-color);
+        }
+
+        .content {
+            margin-left: var(--sidebar-width);
+            width: calc(100% - var(--sidebar-width));
+            padding: 2rem 4rem;
+        }
+
+        .content section {
+            padding-top: 4rem;
+            margin-top: -4rem;
+            /* Offset for fixed header */
+            margin-bottom: 3rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 2rem;
+        }
+
+        .content section:last-child {
+            border-bottom: none;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: var(--text-color);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.6rem;
+            color: var(--text-color);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: #444;
+            font-size: 1.1rem;
+        }
+
+        ul,
+        ol {
+            margin-left: 20px;
+            margin-bottom: 1rem;
+            color: #444;
+            font-size: 1.1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        code {
+            font-family: monospace;
+            background-color: #e8e8e8;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: var(--text-color);
+        }
+
+        pre {
+            background-color: #f5f5f5;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            border: none;
+        }
+
+        .card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .content {
+                margin-left: 0;
+                width: 100%;
+                padding: 1.5rem;
+            }
+
+            .content section {
+                padding-top: 2rem;
+                margin-top: -2rem;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            h3 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <header class="sidebar-header">Tawsila<span>.</span>docs</header>
+            <nav id="nav-links">
+                <ul>
+                    <li><a href="#chapter-1">1. Introduction</a></li>
+                    <li><a href="#chapter-2">2. Architecture</a></li>
+                    <li><a href="#chapter-3">3. Folder Structure</a></li>
+                    <li><a href="#chapter-4">4. Key Features</a></li>
+                    <li><a href="#chapter-5">5. Getting Started</a></li>
+                    <li><a href="#chapter-6">6. Code Review</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <header>
+                <h1>Hanuut Tawsila (Driver App)</h1>
+                <p>Technical Documentation for New Developers</p>
+            </header>
+
+            <section id="chapter-1">
+                <h2>Chapter 1: Introduction & Project Overview</h2>
+
+                <h3>1.1. Goal of this Document</h3>
+                <p>
+                    Welcome to the Tawsila development team! This document is your comprehensive guide to the Tawsila
+                    application. Tawsila is a unified logistics and transportation platform built as a single Flutter
+                    application serving two distinct user roles: <strong>Passengers</strong> (who request services) and
+                    <strong>Drivers</strong> (who fulfill them). Our goal is to provide a clear overview of this
+                    dual-purpose architecture, its core features, and the underlying technology, enabling you to
+                    contribute to building this MVP into a full-featured platform.
+                </p>
+
+                <h3>1.2. Application's Role in the Hanuut Ecosystem</h3>
+                <p>
+                    The Tawsila app is a key component of the Hanuut ecosystem, acting as both a service request portal
+                    and the primary tool for logistical fulfillment. It communicates directly with the central Hanuut
+                    API to coordinate tasks generated by users.
+                </p>
+                <div class="card">
+                    <p class="card-title">Target Users: Passengers & Drivers (Logistic Agents)</p>
+                    <p>
+                        The application operates in two primary modes, determined by the user's role:
+                    </p>
+                    <ul>
+                        <li><strong>Passenger Mode:</strong> For end-users who need to request a ride or the delivery of
+                            personal items. They can set pickup and drop-off locations, see pricing, and track their
+                            driver in real-time.</li>
+                        <li><strong>Driver Mode:</strong> For professional drivers and logistic agents who want to earn
+                            money by fulfilling missions. They register their vehicle, go online to signal availability,
+                            accept incoming jobs (both rides and deliveries), and manage their workflow and earnings.
+                        </li>
+                    </ul>
+                    <p>
+                        This dual-user model is the app's core architectural concept. A single codebase handles both
+                        user experiences, switching context based on the user's login type.
+                    </p>
+                </div>
+
+                <h3>1.3. Core Features</h3>
+                <p>
+                    The application's feature set is divided by user role.
+                </p>
+                <div class="card">
+                    <p class="card-title">For Passengers (Service Requesters)</p>
+                    <ul>
+                        <li><strong>Ride & Delivery Hailing:</strong> A map-based interface to set pickup and
+                            destination points, view estimated distance and duration, and confirm a ride or delivery
+                            request.</li>
+                        <li><strong>Address Management:</strong> Ability to save and manage frequently used addresses.
+                        </li>
+                        <li><strong>Real-time Driver Tracking:</strong> Viewing the assigned driver's location on the
+                            map as they approach.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <p class="card-title">For Drivers (Logistic Agents)</p>
+                    <ul>
+                        <li><strong>Onboarding & Profile Setup:</strong> A multi-step process for registration, vehicle
+                            information submission, and document verification.</li>
+                        <li><strong>Go Online/Offline Status:</strong> A toggle to become available for receiving
+                            mission requests.</li>
+                        <li><strong>Mission Management:</strong> Accepting/declining incoming jobs, and managing the
+                            step-by-step lifecycle of an active mission (e.g., arrived at pickup, completed).</li>
+                        <li><strong>Earnings & Activity Tracking:</strong> A dashboard for viewing daily/monthly income
+                            and a history of completed missions.</li>
+                    </ul>
+                </div>
+
+                <h3>1.4. Technology Stack</h3>
+                <p>
+                    The Tawsila app is built on a modern and robust Flutter stack, designed to support its dual
+                    functionality and real-time requirements.
+                </p>
+                <div class="card">
+                    <span class="tag">Framework: Flutter & Dart</span>
+                    <span class="tag">State Management: flutter_riverpod</span>
+                    <span class="tag">Routing: auto_route</span>
+                    <span class="tag">API Communication: http & http_interceptor</span>
+                    <span class="tag">Local Storage: Hive & flutter_secure_storage</span>
+                    <span class="tag">Real-time: Firebase Cloud Messaging</span>
+                    <span class="tag">Mapping: flutter_osm_plugin</span>
+                    <span class="tag">State Modeling: freezed</span>
+                    <span class="tag">Localization: Intl (ARB, EN, FR)</span>
+                </div>
+            </section>
+
+            <section id="chapter-2">
+                <h2>Chapter 2: Architecture & Core Concepts</h2>
+
+                <h3>2.1. High-Level Architecture</h3>
+                <p>
+                    The project is structured using a <strong>feature-first, layered architecture</strong>, a design
+                    inspired by Clean Architecture principles. This is fundamental to managing the complexity of a
+                    dual-role application, as it allows us to isolate the business logic for Passengers and Drivers
+                    while sharing common core functionalities.
+                </p>
+                <p>
+                    The structure is divided into two main parts:
+                </p>
+                <ul>
+                    <li><strong>Core Layer (<code>lib/core</code>):</strong> This is the application's foundation,
+                        containing shared, role-agnostic code. This includes the central HTTP client, authentication
+                        interceptors, navigation setup (AutoRoute), shared widgets (buttons, dialogs), and local
+                        database (Hive) initialization.</li>
+                    <li><strong>Feature Layer (<code>lib/features</code>):</strong> This is where the business logic for
+                        both user types resides. Each feature is a self-contained module. Critically, some features are
+                        specific to one role (e.g., <code>features/driver</code>), while others serve both (e.g.,
+                        <code>features/mission</code>, which is created by a Passenger and fulfilled by a Driver). Each
+                        feature is internally layered to enforce separation of concerns:
+                        <ul>
+                            <li><strong>Presentation:</strong> The UI (Views/Widgets) and state management (Riverpod
+                                Providers).</li>
+                            <li><strong>Domain:</strong> Business rules, entities, and repository interfaces.</li>
+                            <li><strong>Data:</strong> Concrete repository implementations and data sources (API & local
+                                cache).</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3>2.2. State Management Strategy: Riverpod</h3>
+                <p>
+                    We use <strong>Riverpod</strong> for both state management and dependency injection. It's the engine
+                    that powers our dual-role experience by managing separate but related states for Passengers and
+                    Drivers.
+                </p>
+                <div class="card">
+                    <p class="card-title">The Profile Type Switch</p>
+                    <p>
+                        The cornerstone of our state management is the <code>profileTypeProvider</code> located in
+                        <code>main/state/providers.dart</code>. This simple provider holds the current user mode
+                        ("customer" or "driver"). The entire application, from the UI down to the network layer, reads
+                        this provider to conditionally change its behavior, effectively switching between Passenger and
+                        Driver modes.
+                    </p>
+                </div>
+                <p>Our main usage patterns include:</p>
+                <ul>
+                    <li><strong><code>StateNotifierProvider</code>:</strong> We use separate notifiers for each primary
+                        entity. For example, <code>UserNotifier</code> manages the state of the logged-in passenger
+                        (<code>UserState</code>), while <code>DriverNotifier</code> manages the state of the logged-in
+                        driver (<code>DriverState</code>). This keeps their complex states isolated and manageable.</li>
+                    <li><strong><code>Provider</code>:</strong> Used to provide services like our repository
+                        implementations. These are injected into the notifiers that need them.</li>
+                    <li><strong>Freezed States:</strong> All state objects (e.g., <code>UserState</code>,
+                        <code>DriverState</code>, <code>MissionState</code>) are built with the Freezed package. This
+                        creates immutable classes and forces the UI to handle all possible states (e.g., `loading`,
+                        `loaded`, `failure`), preventing runtime errors and ensuring a predictable user experience in
+                        both app modes.</li>
+                </ul>
+
+                <h3>2.3. API & Real-time Communication</h3>
+                <p>
+                    The app's communication with the backend is intelligently designed to handle authentication for both
+                    user types and to provide real-time updates for a responsive experience.
+                </p>
+                <div class="card">
+                    <p class="card-title">Role-Aware HTTP Interceptors</p>
+                    <p>
+                        We use the <code>http_interceptor</code> package to create a chain of middleware that processes
+                        every API call. The <code>HttpInterceptor</code> and <code>ExpiredTokenRetryPolicy</code> are
+                        role-aware. They read the <code>profileTypeProvider</code> to determine which user is active.
+                    </p>
+                    <ul>
+                        <li>When making a request, the interceptor checks the profile type and attaches the correct JWT
+                            token (either from the customer's secure storage or the driver's).</li>
+                        <li>If a token expires (401 error), the retry policy again checks the profile type and calls the
+                            appropriate refresh token endpoint (<code>/auth/refreshToken/customer</code> or
+                            <code>/auth/refreshToken/driver</code>). This allows a single, clean networking layer to
+                            handle authentication for both roles seamlessly.</li>
+                    </ul>
+                </div>
+                <p>
+                    For real-time updates, the app uses <strong>Firebase Cloud Messaging (FCM)</strong>. This is
+                    critical for the core loop: when a Passenger requests a ride, the API sends an FCM notification to
+                    available Drivers. When a Driver accepts or updates their location, the API sends an FCM
+                    notification back to the Passenger. The app's `_firebaseMessagingBackgroundHandler` listens for
+                    these messages, plays an alert sound, and triggers the relevant Riverpod notifiers to refetch data
+                    and update the UI for the appropriate user.
+                </p>
+            </section>
+
+            <section id="chapter-3">
+                <h2>Chapter 3: Folder Structure</h2>
+                <p>
+                    The project's <code>lib</code> directory is organized to reflect our feature-first, dual-role
+                    architecture. This clean separation helps you locate files for either the Passenger or Driver
+                    experience quickly and understand where new functionality should be added.
+                </p>
+                <pre><code>lib/
+├── core/
+│   ├── config/       # Shared UI constants, themes
+│   ├── db/           # Hive database setup (app_settings, local_database)
+│   ├── interceptors/ # Role-aware HTTP interceptors for API calls
+│   ├── l10n/         # Localization files (.arb) for ARB, EN, FR
+│   ├── network/      # Central API client (BaseClient) and error handling
+│   ├── resources/    # Custom Failure & Exception classes for error modeling
+│   ├── routes/       # AutoRoute configuration (router.dart)
+│   └── widgets/      # Common, reusable widgets (buttons, dialogs, etc.)
+│
+├── features/
+│   ├── address_customer/ # Address management for Passengers
+│   ├── auth/
+│   │   ├── auth_driver/  # Driver-specific login & registration logic
+│   │   └── customer_auth/ # Passenger-specific login & registration logic
+│   ├── driver/         # Core profile, status, and activity logic for Drivers
+│   ├── mission/        # Shared logic for creating and fulfilling missions
+│   ├── order/          # Data models for orders (often part of a delivery mission)
+│   ├── settings/       # App settings (language, etc.)
+│   └── zone/           # Geographical service zone management for Drivers
+│
+├── main/
+│   ├── env.dart      # Environment config (dev vs. prod API URLs)
+│   ├── main_dev.dart # Entry point for the development flavor
+│   └── main_prod.dart# Entry point for the production flavor
+│
+└── main.dart         # Main application widget and initialization
+</code></pre>
+
+                <h3>Deep Dive into a Feature Folder: <code>features/auth/</code></h3>
+                <p>
+                    The <code>auth</code> feature is a prime example of how we structure code for our dual-user model.
+                    The parent folder contains logic shared by both authentication flows, while the sub-folders
+                    implement the specifics for each role.
+                </p>
+                <div class="card">
+                    <p class="card-title"><strong>Passenger Auth</strong> (<code>features/auth/customer_auth/</code>)
+                    </p>
+                    <p>This module handles the entire authentication flow for a passenger.
+                    <ul>
+                        <li><code>presentation/view/auth_screen.dart</code>: This is the main UI entry point, containing
+                            widgets for phone number entry, OTP verification, and password/registration forms.</li>
+                        <li><code>presentation/state/auth_notifier.dart</code>: The <code>CustomerAuthNotifier</code>
+                            orchestrates the logic, calling methods like <code>customerPhoneExists</code> and
+                            <code>loginCustomer</code>.</li>
+                        <li><code>data/datasources/auth_remote_datasource.dart</code>: Makes the actual API calls to
+                            customer-specific endpoints like <code>/auth/login/customer</code> and
+                            <code>/customer/checkUserExistence/:phone</code>.</li>
+                    </ul>
+                    </p>
+                </div>
+                <div class="card">
+                    <p class="card-title"><strong>Driver Auth</strong> (<code>features/auth/auth_driver/</code>)</p>
+                    <p>This module handles the more complex authentication and onboarding flow for a driver.
+                    <ul>
+                        <li><code>presentation/views/register/register_screen.dart</code>: The main UI for the
+                            multi-step driver registration process.</li>
+                        <li><code>presentation/state/auth_notifier.dart</code>: The <code>DriverAuthNotifier</code>
+                            handles the business logic for logging in and registering a driver.</li>
+                        <li><code>data/datasources/auth_remote_datasource.dart</code>: Makes API calls to
+                            driver-specific endpoints like <code>/auth/login/driver</code> and
+                            <code>/auth/register/driver</code>.</li>
+                    </ul>
+                    </p>
+                </div>
+                <p>
+                    This pattern of separating logic by role within a feature folder is a core principle of the
+                    codebase. It keeps the concerns for each user type cleanly separated while still being organized
+                    under a single, relevant domain.
+                </p>
+            </section>
+
+            <section id="chapter-4">
+                <h2>Chapter 4: Key Features & Implementation</h2>
+                <p>This chapter details the primary user flows for both Passengers and Drivers, focusing on the core
+                    functionality of the current MVP.</p>
+
+                <h3 style="color: var(--secondary-color); border-bottom: 2px solid var(--secondary-color);">For
+                    Passengers (Service Requesters)</h3>
+
+                <h4>4.1. Requesting a Ride</h4>
+                <div class="card">
+                    <p>
+                        <strong>Description:</strong> This is the main user flow for a passenger. It allows them to
+                        define a pickup and destination, review the estimated trip details, and submit the request to
+                        nearby drivers.
+                    </p>
+                    <p>
+                        <strong>Main Widgets:</strong> <code>FindARide</code> (the main screen),
+                        <code>RequestDriverTitles</code> (displays departure/destination info),
+                        <code>RequestDriverForm</code> (contains the input fields and confirmation button),
+                        <code>MapWidget</code> (the interactive map).
+                    </p>
+                    <p class="card-title">State Management Flow:</p>
+                    <ol>
+                        <li>The user taps "Request a Ride" from the initial screen, which sets a local UI state flag
+                            `expStarted` to true, revealing the map and input forms.</li>
+                        <li>The user sets a departure point, either by interacting with the map or using the search
+                            field. This action calls the <code>setPickUpCoordinates</code> method on the
+                            <code>MissionSetterNotifier</code>, updating the in-progress <code>MissionEntity</code>
+                            state. The UI state <code>departureConfirmed</code> becomes true.</li>
+                        <li>The user then sets a destination point, which calls <code>setDropOffCoordinates</code> on
+                            the same notifier.</li>
+                        <li>Once both points are set, the UI triggers <code>_showNavLine()</code>. This calls the
+                            <code>calculateRoadInfo</code> method in <code>CustomerMissionNotifier</code>, which in turn
+                            hits the Mapbox Directions API to fetch the route geometry, distance, and duration.</li>
+                        <li>The trip price is calculated locally in <code>MissionsUtil.calculateRideCost</code> using
+                            the returned distance and duration. The UI updates to show these details.</li>
+                        <li>Finally, the user taps "Order a ride now". This calls the <code>requestARide</code> method
+                            on the <code>MissionSetterNotifier</code>. This method finalizes the
+                            <code>MissionEntity</code> object (adding customer details, mission type, etc.) and calls
+                            the <code>create</code> method in <code>CustomerMissionNotifier</code>.</li>
+                        <li>This last step makes a <code>POST /deliveryMission</code> API call, which creates the
+                            mission record in the database and begins notifying available drivers via FCM.</li>
+                    </ol>
+                </div>
+
+                <h3 style="color: var(--primary-color); border-bottom: 2px solid var(--primary-color);">For Drivers
+                    (Logistic Agents)</h3>
+
+                <h4>4.2. Driver Onboarding & Profile Completion</h4>
+                <div class="card">
+                    <p>
+                        <strong>Description:</strong> This is the multi-step process a new driver goes through to create
+                        a validated account. The goal is to collect all necessary personal, vehicle, and legal
+                        information.
+                    </p>
+                    <p>
+                        <strong>Main Widgets:</strong> <code>RegisterScreen</code>, <code>GettingStarted</code> (for
+                        phone entry), and the various steps within <code>DriverScreen</code> which are revealed when a
+                        profile is incomplete (e.g., adding vehicle info, uploading documents).
+                    </p>
+                    <p class="card-title">State Management Flow:</p>
+                    <ol>
+                        <li>A new user starts in <code>RegisterScreen</code>, enters their phone, and completes the OTP
+                            verification.</li>
+                        <li>They are then taken to the main app, where the UI checks the completeness of their
+                            <code>DriverEntity</code> object.</li>
+                        <li>The <code>DriverScreen</code> conditionally renders instructional widgets (e.g., "Upload
+                            your identity card") based on missing data in the driver object. For example, if
+                            <code>driver.vehicle == null</code>, the <code>VehiculeInformationForm</code> is shown.</li>
+                        <li>Each step (e.g., uploading a selfie, adding vehicle details, selecting service zones)
+                            triggers a method in <code>DriverNotifier</code>, such as <code>editVehicle</code> or
+                            <code>editDocuments</code>.</li>
+                        <li>These methods call the repository, which hits <code>PUT /driver/:driverId</code> endpoints
+                            to update the driver's profile on the backend.</li>
+                    </ol>
+                </div>
+
+                <h4>4.3. Accepting and Executing a Mission</h4>
+                <div class="card">
+                    <p>
+                        <strong>Description:</strong> This is the core work loop for a driver, from receiving a job to
+                        completing it. The logic handles both simple deliveries and more complex multi-stop or
+                        ride-sharing missions.
+                    </p>
+                    <p>
+                        <strong>Main Widgets:</strong> <code>AvailableMissions</code>,
+                        <code>PotentialRideMissionBottomAction</code>, <code>FocusedCurrentMissionWidget</code>,
+                        <code>ManageRideCustomerPickup</code>, <code>ManageRideCustomerDropOff</code>.
+                    </p>
+                    <p class="card-title">State Management Flow:</p>
+                    <ol>
+                        <li>An FCM notification triggers a data refresh. An available mission appears in the UI,
+                            displayed by a <code>MissionDeliveryCard</code> or <code>RideMissionCard</code>.</li>
+                        <li>The driver taps "Accept Mission". This calls either <code>acceptDeliveryMission</code> or
+                            <code>acceptRideMission</code> in the <code>MissionNotifier</code>.</li>
+                        <li>The notifier's repository hits the corresponding API endpoint (e.g.,
+                            <code>PUT /deliveryMission/acceptRideMission/:missionId/:driverId</code>). The driver's own
+                            <code>DriverState</code> also changes to <code>onMission</code>.</li>
+                        <li>The UI updates to the "in-progress" view. The driver navigates to the first pickup point.
+                        </li>
+                        <li>At each key stage (arrival at pickup, item collected, arrival at drop-off), the driver taps
+                            a confirmation button (e.g., "I have arrived"). This triggers a specific method in the
+                            <code>MissionNotifier</code>, like <code>arrivedToRideCustomer</code>.</li>
+                        <li>This method constructs a new <code>StateModel</code> object (e.g.,
+                            <code>state: "driver-arrived-to-pickup"</code>) and calls the repository to update the
+                            mission via a <code>PUT /deliveryMission/updateState/:missionId</code> request, appending
+                            the new state to the mission's <code>stateChanges</code> array for a complete audit trail.
+                        </li>
+                        <li>This continues until the final "Drop Off" or "Deliver" button is pressed, which moves the
+                            mission state to <code>completed</code> and the driver's state back to <code>online</code>.
+                        </li>
+                    </ol>
+                </div>
+            </section>
+
+            <section id="chapter-5">
+                <h2>Chapter 5: Getting Started & Developer Setup</h2>
+                <p>
+                    Ready to run the code? Here’s your step-by-step guide to setting up the Tawsila project on your
+                    local machine.
+                </p>
+
+                <h3>5.1. Prerequisites</h3>
+                <p>
+                    Before you begin, make sure you have the following software installed:
+                </p>
+                <ul>
+                    <li><strong>Flutter SDK:</strong> Version 3.10 or higher is recommended.</li>
+                    <li><strong>Dart SDK:</strong> Comes bundled with Flutter.</li>
+                    <li><strong>An IDE:</strong> VS Code with the Flutter extension or Android Studio.</li>
+                    <li><strong>Git:</strong> For cloning the repository.</li>
+                    <li><strong>An emulator or physical device:</strong> A physical device is highly recommended for
+                        properly testing location and mapping features.</li>
+                </ul>
+
+                <h3>5.2. Installation</h3>
+                <p>
+                    Follow these commands in your terminal to get the project files and install dependencies.
+                </p>
+                <pre><code># 1. Clone the repository
+git clone &lt;your-repository-url&gt;
+
+# 2. Navigate into the project directory
+cd tawsila
+
+# 3. Install all the Flutter packages
+flutter pub get</code></pre>
+
+                <h3>5.3. Configuration</h3>
+                <p>
+                    The app uses environment variables for sensitive keys and configuration that changes between
+                    development and production.
+                </p>
+                <ol>
+                    <li>In the root directory of the project, create a new file named <code>.env</code>.</li>
+                    <li>
+                        You will need API keys for services like Mapbox. Add the necessary keys to this file. For
+                        example:
+                    </li>
+                </ol>
+                <pre><code># .env file contents
+images_AES_256=YOUR_32_CHAR_ENCRYPTION_KEY_HERE
+mapBoxToken=YOUR_MAPBOX_PUBLIC_TOKEN
+tawsila_navigation=YOUR_MAPBOX_SECRET_TOKEN
+places_key=YOUR_GOOGLE_PLACES_API_KEY
+</code></pre>
+                <p>
+                    The API base URL is configured in <code>lib/main/env.dart</code>. For local development against a
+                    local instance of the Hanuut API, you should modify the <code>dev</code> environment URL.
+                </p>
+                <pre><code>// Inside lib/main/env.dart
+static setupEnvironment(Environment env) {
+  _environment = env;
+  switch (env) {
+    case Environment.dev:
+      // Change this to your local machine's IP address
+      _apiUrl = "http://YOUR_LOCAL_IP:3000"; 
+      break;
+    case Environment.prod:
+      _apiUrl = "https://api.hanuut.com";
+      break;
+  }
+}</code></pre>
+
+                <h3>5.4. Running the App</h3>
+                <p>
+                    The project is configured to use Flavors (<code>dev</code> and <code>prod</code>) to separate
+                    environments.
+                </p>
+                <p>To run the development version of the app, which points to your configured dev API URL, use the
+                    following command:</p>
+                <pre><code>flutter run --flavor dev -t lib/main/main_dev.dart</code></pre>
+                <p>
+                    The app should now build and launch on your connected device or emulator. Happy coding!
+                </p>
+
+            </section>
+
+            <section id="chapter-6">
+                <h2>Chapter 6: Code Review & Next Steps</h2>
+
+                <h3>6.1. Code Quality Remarks</h3>
+                <p>
+                    From a senior developer perspective, the Tawsila codebase has a strong architectural foundation but
+                    contains legacy code and inconsistencies that should be addressed to improve maintainability.
+                </p>
+                <div class="card">
+                    <p class="card-title">Strengths</p>
+                    <ul>
+                        <li><strong>Solid Architecture:</strong> The feature-first, layered structure is well-defined,
+                            making it easy to locate code and understand dependencies for both user roles.</li>
+                        <li><strong>Robust State Management:</strong> The consistent use of Riverpod with Freezed for
+                            immutable states is a modern, effective pattern that reduces bugs and makes UI logic
+                            predictable. The use of a top-level <code>profileTypeProvider</code> is a smart way to
+                            manage the dual-user context.</li>
+                        <li><strong>Resilient Networking:</strong> The implementation of role-aware HTTP interceptors
+                            for automatic token refresh is a standout feature that ensures a stable user session for
+                            both passengers and drivers.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <p class="card-title">Areas for Improvement</p>
+                    <ul>
+                        <li><strong>Magic Strings:</strong> The code frequently uses raw string literals for critical
+                            identifiers like Hive box keys (e.g., <code>"driver"</code>, <code>"missions"</code>), API
+                            user roles (<code>"driver"</code>, <code>"customer"</code>), and notification message
+                            content. These should be centralized into constant variables to prevent typos and improve
+                            code clarity.</li>
+                        <li><strong>State Management Complexity:</strong> While powerful, the state management has
+                            become complex due to the dual-role nature. There are many providers with similar names
+                            (e.g., `driverNotifierProvider`, `uniqueDriverNotifierProvider`). A refactoring pass could
+                            consolidate some of these and simplify the state graph.</li>
+                        <li><strong>MVP-level Code:</strong> Some sections contain logic that feels temporary or not
+                            fully fleshed out, which is expected in an MVP but needs to be addressed for the next level
+                            of production readiness.</li>
+                    </ul>
+                </div>
+
+                <h3>6.2. Identified Unused/Deprecated Code</h3>
+                <p>
+                    While the dual-role functionality is intentional, some parts of the codebase still appear to be
+                    remnants of earlier iterations or are not fully integrated into the primary user flows documented
+                    above.
+                </p>
+                <ul>
+                    <li><strong>Legacy UI Widgets:</strong> The <code>OldRideUI</code> widget and related components
+                        appear to have been replaced by the more generic and flexible <code>MissionDeliveryCard</code>
+                        and <code>RideMissionCard</code> system. These older widgets are not referenced in the main
+                        navigation flows.</li>
+                    <li><strong>Gift Card Feature (<code>features/gift_card</code>):</strong> This feature seems to have
+                        minimal integration into either the passenger or driver flows in the current MVP. While it might
+                        be planned for the future, it currently adds complexity without a clear use case.</li>
+                    <li><strong>Isolated Widgets:</strong> Some widgets, like
+                        <code>core/widgets/swipe_detector.dart</code>, exist in the codebase but are not imported or
+                        used anywhere, making them safe candidates for removal.</li>
+                </ul>
+
+                <h3>6.3. Suggested Next Steps & Refinements</h3>
+                <p>
+                    To evolve this MVP into a full-featured, production-grade logistics platform, I recommend the
+                    following strategic steps:
+                </p>
+                <ol>
+                    <li><strong>Solidify the "Logistic Agent" Model:</strong> The vision is larger than just "drivers."
+                        Refactor the codebase to reflect this. Rename <code>Driver</code> entities and notifiers to
+                        <code>Agent</code> or <code>Partner</code>. Add fields to the `VehicleModel` to support
+                        different types like bicycles, trucks, and even "no vehicle" for in-store warehouse tasks.</li>
+                    <li><strong>Centralize Constants:</strong> This is a high-impact, low-effort task. Create dedicated
+                        files (e.g., `core/config/constants/api_constants.dart`) for all API paths, Hive keys, and
+                        string literals. This will immediately improve code readability and reduce bugs.</li>
+                    <li><strong>Refactor and Consolidate State Notifiers:</strong> The highest priority for state
+                        management should be to simplify the provider graph. Analyze the various mission and user
+                        notifiers. The goal should be to have one primary notifier for the active user's state (whether
+                        Passenger or Agent) and one primary notifier for managing the list of missions, with other
+                        providers deriving their state from these sources.</li>
+                    <li><strong>Expand Mission Types:</strong> Enhance the `MissionEntity` to support the broader
+                        logistics vision. Add a more detailed `missionType` enum that includes `WAREHOUSE_PICKING`,
+                        `CUSTOMER_TO_CUSTOMER_DELIVERY`, and `HYPERLOCAL_RIDE` to differentiate workflows. Build out the
+                        corresponding UI and state logic for these new mission types.</li>
+                    <li><strong>Perform a Cleanup Pass:</strong> After major refactoring, conduct a thorough audit to
+                        remove the identified unused features (like `gift_card`, unless it's on the immediate roadmap)
+                        and any other orphaned code or assets.</li>
+                </ol>
+
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('#nav-links a');
+            const sections = document.querySelectorAll('main section');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.3
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                let mostVisibleSectionId = null;
+                let maxVisibleRatio = 0;
+
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && entry.intersectionRatio > maxVisibleRatio) {
+                        maxVisibleRatio = entry.intersectionRatio;
+                        mostVisibleSectionId = entry.target.id;
+                    }
+                });
+
+                if (mostVisibleSectionId) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${mostVisibleSectionId}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+
+</html>

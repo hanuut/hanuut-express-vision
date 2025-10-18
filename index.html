@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hanuut Express - Project Dashboard & Vision</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-color: #39a170;
+        --secondary-color: #f07a48;
+        --background-color: #f8f9fa;
+        --surface-color: #ffffff;
+        --text-color: #212529;
+        --text-secondary-color: #495057;
+        --border-color: #dee2e6;
+        --font-main: "Ubuntu", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background-color: var(--background-color);
+        color: var(--text-color);
+        font-family: var(--font-main);
+        margin: 0;
+        padding: 0;
+        font-size: 18px;
+        line-height: 1.7;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      header {
+        text-align: center;
+        padding: 4rem 0;
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 3rem;
+      }
+
+      header h1 {
+        font-size: 4rem;
+        color: var(--text-color);
+        font-weight: 700;
+        margin: 0 0 1rem 0;
+      }
+
+      header h1 span {
+        color: var(--primary-color);
+      }
+
+      header .subtitle {
+        font-size: 1.5rem;
+        color: var(--text-secondary-color);
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      section {
+        background-color: var(--surface-color);
+        border-radius: 12px;
+        padding: 3rem;
+        margin-bottom: 3rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+
+      h2 {
+        font-size: 2.8rem;
+        color: var(--text-color);
+        margin-top: 0;
+        margin-bottom: 2rem;
+        border-bottom: 3px solid var(--primary-color);
+        padding-bottom: 1rem;
+        display: inline-block;
+      }
+
+      h3 {
+        font-size: 1.8rem;
+        color: var(--secondary-color);
+        margin-top: 2.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      p,
+      ul,
+      li {
+        color: var(--text-secondary-color);
+        margin-bottom: 1rem;
+      }
+
+      ul {
+        list-style-type: none;
+        padding-left: 0;
+      }
+
+      ul li {
+        position: relative;
+        padding-left: 25px;
+        margin-bottom: 0.75rem;
+      }
+
+      ul li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: var(--primary-color);
+        font-weight: bold;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+
+      .card {
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.5rem;
+        background-color: #f8f9fa;
+      }
+
+      .card h4 {
+        margin-top: 0;
+        font-size: 1.3rem;
+        color: var(--primary-color);
+      }
+
+      .roadmap {
+        border-left: 4px solid var(--primary-color);
+        padding-left: 2rem;
+      }
+
+      .roadmap-phase {
+        position: relative;
+        margin-bottom: 3rem;
+      }
+
+      .roadmap-phase::before {
+        content: "";
+        position: absolute;
+        left: -42px;
+        top: 5px;
+        width: 20px;
+        height: 20px;
+        background-color: var(--secondary-color);
+        border-radius: 50%;
+        border: 4px solid var(--background-color);
+      }
+
+      .roadmap-phase h3 {
+        margin-top: 0;
+        color: var(--text-color);
+      }
+
+      .roadmap-phase .status {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 16px;
+        font-weight: 500;
+        font-size: 0.9rem;
+        margin-left: 1rem;
+        color: #fff;
+      }
+
+      .status-done {
+        background-color: #28a745;
+      }
+      .status-progress {
+        background-color: #ffc107;
+        color: var(--text-color);
+      }
+      .status-future {
+        background-color: #6c757d;
+      }
+
+      .doc-links .grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .doc-link-card {
+        display: block;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 1.5rem;
+        text-decoration: none;
+        color: var(--text-color);
+        transition: all 0.3s ease;
+      }
+
+      .doc-link-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        border-color: var(--primary-color);
+      }
+
+      .doc-link-card .doc-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin: 0 0 0.5rem 0;
+      }
+
+      .doc-link-card .doc-desc {
+        font-size: 1rem;
+        color: var(--text-secondary-color);
+        margin: 0;
+      }
+
+      footer {
+        text-align: center;
+        padding: 2rem 0;
+        margin-top: 2rem;
+        color: var(--text-secondary-color);
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Hanuut Express <span>Project</span></h1>
+        <p class="subtitle">
+          The strategic vision, operational roadmap, and central documentation
+          hub for building the digital backbone of local commerce in Algeria.
+        </p>
+      </header>
+
+      <main>
+        <section id="vision">
+          <h2>Our Vision: The Digital Mall for Algeria</h2>
+          <p>
+            The Algerian market presents a unique and significant opportunity.
+            There is a critical lack of integrated digital platforms for local
+            businesses, who are forced to use fragmented, inefficient methods
+            for inventory, sales, and delivery.
+          </p>
+          <p>
+            <strong
+              >Our mission is to become the indispensable "digital mall" in
+              every Algerian's phone.</strong
+            >
+            We are not just building apps; we are building a full-stack commerce
+            ecosystem that creates a seamless loop between shops, customers, and
+            drivers. We manage the storefront, the back-office, and the
+            last-mile logistics—something no competitor currently offers in an
+            integrated way.
+          </p>
+        </section>
+
+        <section id="ecosystem">
+          <h2>The Hanuut Express Ecosystem</h2>
+          <p>
+            Our platform is a suite of three interconnected applications,
+            powered by a robust central API, each designed for a specific user.
+          </p>
+          <div class="grid">
+            <div class="card">
+              <h4>Hanuut (For Customers)</h4>
+              <p>
+                A safe, reliable, and user-friendly online marketplace to
+                discover and order from trusted local shops with real-time
+                tracking.
+              </p>
+            </div>
+            <div class="card">
+              <h4>My Hanuut (For Shop Owners)</h4>
+              <p>
+                A powerful business tool that allows any shop to create an
+                online store, digitize inventory, and process online orders
+                seamlessly.
+              </p>
+            </div>
+            <div class="card">
+              <h4>Tawsila (For Logistics Agents)</h4>
+              <p>
+                A flexible platform for drivers and agents to earn income by
+                fulfilling delivery requests and providing ride-sharing
+                services.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="roadmap">
+          <h2>Strategic Roadmap</h2>
+          <p>
+            Our growth is structured in deliberate, measurable phases. Here's
+            our journey from a validated concept to a market-defining platform.
+          </p>
+
+          <div class="roadmap">
+            <div class="roadmap-phase">
+              <h3>
+                Phase 0: Foundation & Validation
+                <span class="status status-done">DONE</span>
+              </h3>
+              <p>
+                We have moved beyond the idea phase and validated our model in a
+                real-world environment, proving the technology and market need.
+              </p>
+              <ul>
+                <li>
+                  <strong>Technology MVP:</strong> Developed and tested Minimum
+                  Viable Products for all three applications (Hanuut, My Hanuut,
+                  Tawsila), the backend API, and a management dashboard.
+                </li>
+                <li>
+                  <strong>Market Testing:</strong> Completed two years of
+                  iterative testing in Arris, Batna (a 40,000-person market),
+                  gathering crucial user feedback.
+                </li>
+                <li>
+                  <strong>Initial Partnerships:</strong> Successfully onboarded
+                  our first three shops (2 food, 1 grocery) and built a pipeline
+                  of future partners.
+                </li>
+              </ul>
+            </div>
+
+            <div class="roadmap-phase">
+              <h3>
+                Phase 1: Market Penetration & Refinement
+                <span class="status status-progress">IN PROGRESS</span>
+              </h3>
+              <p>
+                This is our current focus: perfecting the operational model,
+                expanding our local partner base, and refining the product based
+                on our go-to-market strategy.
+              </p>
+
+              <h4>Key Objectives:</h4>
+              <ul>
+                <li>
+                  <strong>Partner Expansion:</strong> Actively onboarding
+                  diverse shop types including a butchery, a fruits & vegetables
+                  shop, a large grocery warehouse, two restaurants, and two
+                  bakeries.
+                </li>
+                <li>
+                  <strong>E-commerce Enabler:</strong> Positioning "My Hanuut"
+                  as the go-to solution for non-tech-savvy individuals and small
+                  brands to get a professional online shop and a shareable link
+                  for social media.
+                </li>
+                <li>
+                  <strong>Product Enhancement:</strong>
+                  <ul>
+                    <li>
+                      <u>Hanuut App:</u> Developing recommendation algorithms
+                      for the home screen and improving the overall user
+                      experience.
+                    </li>
+                    <li>
+                      <u>My Hanuut App:</u> Adapting the UX for specific user
+                      roles (Owner vs. Worker) to ensure operational clarity and
+                      traceability.
+                    </li>
+                    <li>
+                      <u>Web Platform:</u> Adding more customization options
+                      (colors, content) for our partners' public-facing web
+                      pages.
+                    </li>
+                    <li>
+                      <u>Payments:</u> Integrating and rigorously testing the
+                      SATIM payment gateway to enable secure online payments.
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <strong>Marketing & Branding:</strong> Supporting our partners
+                  with a strong online presence by creating at least six
+                  high-quality reels per week to feature their businesses and
+                  market our platform.
+                </li>
+                <li>
+                  <strong>Logistics Foundation:</strong> Beginning controlled
+                  testing of Tawsila with a select group of delivery agents
+                  while developing a unified login system for Hanuut users to
+                  seamlessly access Tawsila.
+                </li>
+              </ul>
+            </div>
+
+            <div class="roadmap-phase">
+              <h3>
+                Phase 2: Regional Expansion & Monetization
+                <span class="status status-future">NEXT</span>
+              </h3>
+              <p>
+                Leveraging our perfected model to expand into new cities and
+                activate our primary revenue streams.
+              </p>
+              <ul>
+                <li>
+                  <strong>Geographic Growth:</strong> Expand partnerships across
+                  major regional hubs including Batna, Setif, and Constantine.
+                </li>
+                <li>
+                  <strong>Revenue Model:</strong> Focus on activating and
+                  scaling a transaction commission-based revenue model.
+                </li>
+              </ul>
+            </div>
+
+            <div class="roadmap-phase">
+              <h3>
+                Phase 3: Scale & Diversification
+                <span class="status status-future">FUTURE</span>
+              </h3>
+              <p>
+                Becoming the undisputed market leader by scaling all operations
+                and introducing new, high-value services for our partners and
+                users.
+              </p>
+              <ul>
+                <li>
+                  <strong>Advanced Partner Tools:</strong> Introduce premium
+                  subscription plans for shops seeking advanced analytics,
+                  inventory tools, and marketing features.
+                </li>
+                <li>
+                  <strong>Advertising Platform:</strong> Launch integrated
+                  advertising products to help shops increase their visibility
+                  within the Hanuut ecosystem.
+                </li>
+                <li>
+                  <strong>Tawsila as a Logistics Platform:</strong> Evolve
+                  Tawsila into a comprehensive logistics and transportation
+                  service.
+                  <ul>
+                    <li>
+                      Offer on-demand transport for packages (C2C) and personal
+                      rides.
+                    </li>
+                    <li>
+                      Support a wide range of vehicles: scooters, bicycles,
+                      cars, vans, and trucks.
+                    </li>
+                    <li>
+                      Introduce missions for agents without vehicles, such as
+                      warehouse management, order preparation, or short-distance
+                      walking deliveries.
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="documentation" class="doc-links">
+          <h2>Technical Assets & Documentation</h2>
+          <p>
+            Access detailed technical reports, architecture overviews, and
+            developer documentation for each component of the Hanuut Express
+            platform.
+          </p>
+          <div class="grid">
+            <a
+              href="hanuut_express_software.html"
+              class="doc-link-card"
+              target="_blank"
+            >
+              <h4 class="doc-title">Platform Valuation Report</h4>
+              <p class="doc-desc">
+                A strategic overview of the entire technology platform, its
+                assets, and key business differentiators.
+              </p>
+            </a>
+            <a href="API/api_docs.html" class="doc-link-card" target="_blank">
+              <h4 class="doc-title">API Documentation</h4>
+              <p class="doc-desc">
+                The complete developer guide to the central NestJS API, covering
+                architecture, modules, and setup.
+              </p>
+            </a>
+            <a
+              href="Website/website_dos.html"
+              class="doc-link-card"
+              target="_blank"
+            >
+              <h4 class="doc-title">Website (hanuut.com) Docs</h4>
+              <p class="doc-desc">
+                Technical documentation for the public-facing React website, its
+                architecture, and state management.
+              </p>
+            </a>
+            <a
+              href="hanuut/hanuut_app.html"
+              class="doc-link-card"
+              target="_blank"
+            >
+              <h4 class="doc-title">Hanuut Customer App Docs</h4>
+              <p class="doc-desc">
+                Technical documentation for the flagship Flutter application for
+                customers.
+              </p>
+            </a>
+            <a
+              href="my_hanuut/my_hanuut.html"
+              class="doc-link-card"
+              target="_blank"
+            >
+              <h4 class="doc-title">My Hanuut Partner App Docs</h4>
+              <p class="doc-desc">
+                Developer guide for the cross-platform (Mobile & Desktop)
+                Flutter app for shop owners.
+              </p>
+            </a>
+            <a
+              href="tawsila/tawsila.html"
+              class="doc-link-card"
+              target="_blank"
+            >
+              <h4 class="doc-title">Tawsila Driver App Docs</h4>
+              <p class="doc-desc">
+                Technical deep-dive into the Flutter application for drivers and
+                logistics agents.
+              </p>
+            </a>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <p>&copy; 2025 Hanuut Express. All Rights Reserved.</p>
+      </footer>
+    </div>
+  </body>
+</html>
