@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF--8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hanuut - Go-to-Market Roadmap</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-color: #39a170;
+        --secondary-color: #f07a48;
+        --background-color: #f8f9fa;
+        --surface-color: #ffffff;
+        --text-color: #212529;
+        --text-secondary-color: #495057;
+        --border-color: #dee2e6;
+        --font-main: "Ubuntu", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background-color: var(--background-color);
+        color: var(--text-color);
+        font-family: var(--font-main);
+        margin: 0;
+        padding: 0;
+        font-size: 18px;
+        line-height: 1.7;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      header {
+        text-align: center;
+        padding: 4rem 0;
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 3rem;
+      }
+
+      header h1 {
+        font-size: 3.5rem;
+        color: var(--text-color);
+        font-weight: 700;
+        margin: 0 0 1rem 0;
+      }
+
+      header h1 span {
+        color: var(--primary-color);
+      }
+
+      header .subtitle {
+        font-size: 1.5rem;
+        color: var(--text-secondary-color);
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      section {
+        background-color: var(--surface-color);
+        border-radius: 12px;
+        padding: 3rem;
+        margin-bottom: 3rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+
+      h2 {
+        font-size: 2.8rem;
+        color: var(--text-color);
+        margin-top: 0;
+        margin-bottom: 2rem;
+        border-bottom: 3px solid var(--primary-color);
+        padding-bottom: 1rem;
+        display: inline-block;
+      }
+
+      h3 {
+        font-size: 1.8rem;
+        color: var(--secondary-color);
+        margin-top: 2.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      p,
+      ul,
+      li {
+        color: var(--text-secondary-color);
+        margin-bottom: 1rem;
+      }
+
+      ul {
+        list-style-type: none;
+        padding-left: 0;
+      }
+
+      ul li {
+        position: relative;
+        padding-left: 25px;
+        margin-bottom: 0.75rem;
+      }
+
+      ul li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: var(--primary-color);
+        font-weight: bold;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+
+      .card {
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.5rem;
+        background-color: #f8f9fa;
+      }
+
+      .card h4 {
+        margin-top: 0;
+        font-size: 1.3rem;
+        color: var(--primary-color);
+      }
+
+      .roadmap {
+        border-left: 4px solid var(--primary-color);
+        padding-left: 2rem;
+        margin-top: 2rem;
+      }
+
+      .roadmap-phase {
+        position: relative;
+        margin-bottom: 3rem;
+      }
+
+      .roadmap-phase::before {
+        content: "";
+        position: absolute;
+        left: -42px;
+        top: 5px;
+        width: 20px;
+        height: 20px;
+        background-color: var(--secondary-color);
+        border-radius: 50%;
+        border: 4px solid var(--background-color);
+      }
+      
+      .roadmap-phase:last-child {
+        margin-bottom: 0;
+      }
+
+      .roadmap-phase h3 {
+        margin-top: 0;
+        color: var(--text-color);
+      }
+
+      .roadmap-phase .status {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 16px;
+        font-weight: 500;
+        font-size: 0.9rem;
+        margin-left: 1rem;
+        color: #fff;
+      }
+
+      .status-progress {
+        background-color: #ffc107;
+        color: var(--text-color);
+      }
+      .status-future {
+        background-color: #6c757d;
+      }
+      .status-later {
+          background-color: #17a2b8;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Marketplace Launch <span>Roadmap</span></h1>
+        <p class="subtitle">
+          Our focused, hands-on strategy for building a trusted local marketplace by partnering with a core group of diverse, high-quality shops.
+        </p>
+      </header>
+
+      <main>
+        <section id="roadmap">
+          <h2>Strategic Execution Plan</h2>
+          <p>
+            The primary goal is to establish a vibrant and reliable marketplace with an initial cohort of at least 10 diverse shops. This foundational phase is critical for testing our platform, gathering user feedback, and building a service that genuinely meets the needs of local businesses before scaling our marketing efforts.
+          </p>
+
+          <div class="roadmap">
+            <div class="roadmap-phase">
+              <h3>
+                Phase 1: Foundation & High-Touch Onboarding
+                <span class="status status-progress">IN PROGRESS</span>
+              </h3>
+              <p>
+                This phase is defined by a "white-glove" service approach. We will work intimately with each founding partner to ensure their success, providing hands-on support at every step. This deep engagement is crucial for user research and feature validation.
+              </p>
+
+              <h4>Key Objectives:</h4>
+              <div class="grid">
+                <div class="card">
+                    <h4>Onboard Specialty Food Retailers</h4>
+                    <p>Establish a fresh-food foundation for the marketplace by onboarding key local vendors.</p>
+                    <ul>
+                        <li><strong>Butcher Shop:</strong> Complete digitization of product catalog and provide full staff training on the My Hanuut app for inventory and order management.</li>
+                        <li><strong>Fruits & Vegetables Shop:</strong> Develop a system for managing variable-weight products and set up their complete digital storefront.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Launch Restaurant Partners</h4>
+                    <p>Bring two distinct food service businesses online to test and refine the order lifecycle management features.</p>
+                    <ul>
+                        <li><strong>Restaurant A (Partially Ready):</strong> Conduct a final menu review, complete staff training, and execute the official online launch.</li>
+                        <li><strong>Restaurant B (Full Setup):</strong> A comprehensive partnership that includes brand identity creation, menu engineering, professional food photography, and full My Hanuut integration.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Target Digital-First Businesses</h4>
+                    <p>Recruit shops already active on social media, offering them a superior platform to professionalize and scale their operations.</p>
+                     <ul>
+                        <li><strong>Strategy:</strong> Identify promising businesses on platforms like Instagram and Facebook and present My Hanuut as the logical next step.</li>
+                        <li><strong>Value Proposition:</strong> Offer them a shareable, professional landing page and a new distribution channel through the Hanuut customer app.</li>
+                    </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="roadmap-phase">
+              <h3>
+                Phase 2: Marketplace Activation & Early Learning
+                <span class="status status-future">NEXT</span>
+              </h3>
+              <p>
+                With a critical mass of 10+ active and reliable shops, the focus will shift to launching the customer-facing marketplace and establishing a robust feedback loop to drive product development.
+              </p>
+              <h4>Key Objectives:</h4>
+              <ul>
+                <li>
+                  <strong>Public Marketplace Launch:</strong> Officially launch the "Hanuut" customer app once our core group of partners is fully operational and confident with the system.
+                </li>
+                <li>
+                  <strong>Partner-Driven Marketing:</strong> Initiate hyper-local marketing campaigns, empowering our founding shops to promote their new online presence to their existing customer base.
+                </li>
+                <li>
+                  <strong>Intensive User Research:</strong> Conduct structured interviews with shop owners and workers to gather direct feedback on the My Hanuut app's usability, workflow, and feature set.
+                </li>
+                 <li>
+                  <strong>Identify Market Needs:</strong> Analyze early usage data and qualitative feedback to identify pain points and discover opportunities for new, high-value features.
+                </li>
+              </ul>
+            </div>
+
+            <div class="roadmap-phase">
+              <h3>
+                Phase 3: Grocery Vertical & Feature Expansion
+                <span class="status status-later">FUTURE</span>
+              </h3>
+              <p>
+                Leveraging the insights and stability gained from the initial phases, we will tackle the more complex grocery vertical and begin building out the next generation of features for the My Hanuut platform.
+              </p>
+               <h4>Key Objectives:</h4>
+              <ul>
+                <li>
+                  <strong>Grocery Onboarding Initiative:</strong> Begin the strategic onboarding of our first grocery partners. This will be a focused effort, requiring significant development and refinement of the warehouse management and inventory control features within My Hanuut.
+                </li>
+                <li>
+                  <strong>Develop Wholesale & Retail Models:</strong> Adapt the platform to support both wholesale (business-to-business) and retail (business-to-consumer) grocery operations.
+                </li>
+                <li>
+                  <strong>Data-Informed Product Development:</strong> Use the feedback collected in Phase 2 to build and deploy new, market-validated features that address the core needs of a wider range of shop owners.
+                </li>
+                <li>
+                  <strong>Optimize & Adapt:</strong> Refine the My Hanuut app to enhance user experience, streamline operations for shop owners, and solidify its position as an indispensable tool for local businesses.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
