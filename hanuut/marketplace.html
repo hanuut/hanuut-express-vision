@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hanuut C2C Marketplace - Project Report</title>
+    <style>
+        :root {
+            --primary-color: #39A170;
+            --secondary-color: #F07A48;
+            --text-color: #333;
+            --text-light-color: #777;
+            --bg-color: #f4f7f9;
+            --card-bg-color: #ffffff;
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background-color: var(--card-bg-color);
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+        }
+
+        h1, h2, h3, h4 {
+            margin: 0 0 15px 0;
+            font-weight: 700;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.2em;
+            color: var(--text-light-color);
+            text-align: center;
+            font-weight: 500;
+            margin-top: -10px;
+            margin-bottom: 30px;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        
+        h4 {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-top: 25px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .test-plan li::before {
+             content: ''; /* Remove default check for test plan */
+        }
+
+        .test-item label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .test-item input[type="checkbox"] {
+            margin-right: 12px;
+            cursor: pointer;
+        }
+
+        .test-item.completed label {
+            color: var(--text-light-color);
+            text-decoration: line-through;
+        }
+
+        .collapsible h3 {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: color 0.2s;
+        }
+        .collapsible h3:hover {
+            color: #2a7a54;
+        }
+        .collapsible h3::after {
+            content: '▼';
+            font-size: 0.7em;
+            transition: transform 0.3s ease-in-out;
+        }
+        .collapsible h3.active::after {
+            transform: rotate(-180deg);
+        }
+        
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out;
+            padding-left: 10px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            font-size: 0.8em;
+            font-weight: bold;
+            border-radius: 12px;
+            color: #fff;
+            margin-left: 10px;
+        }
+        .badge.tier1 { background-color: var(--primary-color); }
+        .badge.tier2 { background-color: var(--secondary-color); }
+        .badge.tier3 { background-color: #397FF9; }
+        
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        .report-header p {
+            margin: 0;
+            color: var(--text-light-color);
+        }
+        .print-btn {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .print-btn:hover {
+            background-color: #e9ecef;
+        }
+        
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .container { padding: 20px; }
+            h1 { font-size: 1.8em; }
+            h3 { font-size: 1.4em; }
+        }
+        
+        @media print {
+            body { background-color: #fff; padding: 0; }
+            .container { box-shadow: none; border: 1px solid #ccc; padding: 20px; }
+            .report-header, .collapsible h3::after { display: none; }
+            .collapsible-content { max-height: none !important; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="report-header">
+            <p><strong>Status:</strong> Internal Review</p>
+            <p><strong>Last Updated:</strong> <span id="timestamp"></span></p>
+            <button class="print-btn" onclick="window.print()">Print Report</button>
+        </div>
+
+        <h1>Hanuut C2C Marketplace ("Hwanet")</h1>
+        <h2>Project & Testing Report</h2>
+
+        <section id="achievement">
+            <h3>Project Goal & Achievement</h3>
+            <p>The primary objective was to solve the "chicken-and-egg" problem of the empty marketplace by building an engaging, user-friendly C2C platform to drive initial user acquisition and content generation.</p>
+            <ul>
+                <li><strong>Re-architected the User Experience:</strong> Shifted from a confusing, tab-based system to a modern, industry-standard Bottom Navigation Bar, clearly separating B2C "Shops" from the C2C "Market".</li>
+                <li><strong>Designed an Engaging UI:</strong> Created a full suite of minimalist and intuitive screens, including a social-media-style discovery feed, a guided ad creation flow, and a consolidated user hub ("My Hanuut").</li>
+                <li><strong>Implemented a Robust Backend:</strong> Built a secure and scalable API with dedicated modules for `market` (ads) and `messaging`, decisively replacing previous insecure workarounds.</li>
+                <li><strong>Developed a Feature-Complete Flutter Module:</strong> Implemented the new UI in Flutter using a clean, feature-driven architecture, powered by Riverpod for state management.</li>
+                <li><strong>Added Personalization:</strong> Integrated a local user activity tracking system to personalize the UI, such as reordering the category rail based on user preferences.</li>
+            </ul>
+        </section>
+
+        <section id="test-plan" class="collapsible">
+            <h3>Full Test Plan (Pre-Production Checklist)</h3>
+            <div class="collapsible-content">
+                <h4>Part A: Backend API Testing (Postman/Insomnia)</h4>
+                <ul class="test-plan">
+                    <li class="test-item"><label><input type="checkbox"><strong>Ad Creation (`POST /market/ads`):</strong> Verify success (201), auth failure (401), and validation failure (400).</label></li>
+                    <li class="test-item"><label><input type="checkbox"><strong>Ad Retrieval (`GET`):</strong> Verify `/feed`, `/ads/my` (authenticated), `/ads/:id`, and `/search?q=` all return correct data and status codes.</label></li>
+                    <li class="test-item"><label><input type="checkbox"><strong>Messaging - Start Conversation (`POST /messaging/messages`):</strong> Verify a message from User A to User B's ad creates new `Conversation` and `Message` documents.</label></li>
+                    <li class="test-item"><label><input type="checkbox"><strong>Messaging - Reply:</strong> Verify a reply from User B adds a message to the existing conversation, but does not create a new one.</label></li>
+                    <li class="test-item"><label><input type="checkbox"><strong>Messaging - Get Inbox (`GET /messaging/conversations`):</strong> Verify the endpoint returns a list of conversations for the authenticated user.</label></li>
+                    <li class="test-item"><label><input type="checkbox"><strong>Messaging - Security Check:</strong> Verify User C cannot access the conversation between User A and User B, returning a 401/403 error.</label></li>
+                </ul>
+                
+                <h4>Part B: Flutter App End-to-End Testing</h4>
+                 <ul class="test-plan">
+                    <li class="test-item"><label><input type="checkbox"><strong>Core Navigation:</strong> Verify seamless switching between "Shops," "Market," and "My Hanuut" tabs, preserving state.</label></li>
+                    <li class="test-item"><label><input type="checkbox"><strong>Market Feed:</strong> Verify feed loads, pull-to-refresh works, and tapping an ad navigates to its detail screen.</label></li>
+                    <li class="test-item"><label><input type="checkbox"><strong>Ad Creation Flow (End-to-End):</strong> Complete all 3 steps, verify button states, use back navigation, and successfully post an ad. Check "My Ads" tab to confirm creation.</label></li>
+                    <li class="test-item"><label><input type="checkbox"><strong>Ad Creation - Image Handling:</strong> Verify image pickers work, images are displayed, and can be removed.</label></li>
+                    <li class="test-item"><label><input type="checkbox"><strong>Messaging Flow:</strong> Initiate a message from an ad, send a reply from another user, and verify the conversation appears correctly in the "Messages" tab for both users.</label></li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="roadmap" class="collapsible">
+            <h3>What's Next? (Roadmap)</h3>
+            <div class="collapsible-content">
+                <h4>Tier 1: Polish & Core Experience <span class="badge tier1">Immediate</span></h4>
+                <ul>
+                    <li><strong>Real Category/Location Selection:</strong> Implement the dedicated selection screens for the ad creation and filter flows.</li>
+                    <li><strong>"Saved Ads" Functionality:</strong> Implement local database logic (Hive) to save and retrieve bookmarked ad IDs.</li>
+                    <li><strong>User Profile/Avatars:</strong> Allow users to upload a profile picture and view a public profile of other sellers.</li>
+                    <li><strong>Ad Management:</strong> Build the UI in "My Ads" to allow users to "Mark as Sold," "Delete," or "Edit" their posts.</li>
+                </ul>
+
+                <h4>Tier 2: Engagement & Growth Features <span class="badge tier2">Mid-Term</span></h4>
+                <ul>
+                    <li><strong>Real-time Messaging:</strong> Integrate WebSockets to provide instant message delivery, typing indicators, and read receipts.</li>
+                    <li><strong>Advanced Search & Filtering:</strong> Enhance backend and UI to support filtering by category, price, and condition.</li>
+                    <li><strong>Rich Share Previews:</strong> Use Open Graph meta tags to create clickable previews when deep links are shared on social media.</li>
+                </ul>
+
+                <h4>Tier 3: Monetization & Expansion <span class="badge tier3">Long-Term</span></h4>
+                <ul>
+                    <li><strong>Featured Ads ("Bumps"):</strong> Introduce an in-app purchase to allow users to bump their ad to the top of the feed.</li>
+                    <li><strong>Crossover Promotion:</strong> Create a pathway for successful C2C sellers to easily register as a professional "Shop".</li>
+                    <li><strong>Delivery Integration:</strong> Explore integrating "Tawsila" to offer on-demand delivery for C2C transactions.</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Collapsible Sections ---
+            const collapsibles = document.querySelectorAll('.collapsible h3');
+            collapsibles.forEach(header => {
+                header.addEventListener('click', () => {
+                    header.classList.toggle('active');
+                    const content = header.nextElementSibling;
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    }
+                });
+            });
+
+            // --- Interactive Checkboxes ---
+            const testItems = document.querySelectorAll('.test-item input[type="checkbox"]');
+            testItems.forEach(checkbox => {
+                checkbox.addEventListener('change', (event) => {
+                    const listItem = event.target.closest('.test-item');
+                    if (listItem) {
+                        listItem.classList.toggle('completed', event.target.checked);
+                    }
+                });
+            });
+            
+            // --- Dynamic Timestamp ---
+            const timestampEl = document.getElementById('timestamp');
+            if (timestampEl) {
+                timestampEl.textContent = new Date().toLocaleString();
+            }
+        });
+    </script>
+</body>
+</html>
